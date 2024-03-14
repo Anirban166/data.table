@@ -33,8 +33,9 @@ pkg.edit.fun = quote(function(old.Package, new.Package, sha, new.pkg.path) {
 
 test.list <- list(
   # Test based on https://github.com/Rdatatable/data.table/issues/5424
-  # Performance regression introduced in: https://github.com/Rdatatable/data.table/pull/4491
-  "Test regression introduced from #4491" = list(
+  # Performance regression introduced in https://github.com/Rdatatable/data.table/pull/4491
+  # Fixed in https://github.com/Rdatatable/data.table/pull/5463    
+  "Test regression fixed in #5463" = list(
     pkg.edit.fun = pkg.edit.fun,
     N = 10^seq(3, 8),
     expr = quote(data.table:::`[.data.table`(dt_mod, , N := .N, by = g)),
@@ -52,7 +53,7 @@ test.list <- list(
     "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842"),
 
   # Test based on https://github.com/Rdatatable/data.table/issues/4200
-  # Performance regression fixed in: https://github.com/Rdatatable/data.table/pull/4558
+  # Performance regression fixed in https://github.com/Rdatatable/data.table/pull/4558
   "Test regression fixed in #4558" = list(
   pkg.edit.fun = pkg.edit.fun,
   N = 10^seq(1, 20),
