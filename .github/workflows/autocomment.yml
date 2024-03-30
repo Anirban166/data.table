@@ -55,18 +55,26 @@ jobs:
           r = getOption("repos");
           r["CRAN"] = "http://cran.us.r-project.org";
           options(repos = r);
+          
           start_installation <- Sys.time();
-          install.packages("atime", dependencies = TRUE); 
+          
+          install.packages("atime", dependencies = TRUE);
+          
           finish_installation_start_running_tests <- Sys.time();
+          
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
+          
           finish_running_tests <- Sys.time();
+          
           installation_time <- as.numeric(difftime(finish_installation_start_running_tests, start_installation, units = "secs"));
           tests_time <- as.numeric(difftime(finish_running_tests, finish_installation_start_running_tests, units = "secs"));
-          cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n", file="/dev/stderr");
-          cat("ATIME_PKG_RUNTIME=", tests_time, "\\n", file="/dev/stderr");
-             '
-        echo "ATIME_INSTALL_RUNTIME=${installation_time}" >> $GITHUB_ENV
-        echo "ATIME_TESTS_RUNTIME=${tests_time}" >> $GITHUB_ENV
+          
+          cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n");
+          cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
+             ' > timings.txt
+             
+        echo "ATIME_INSTALL_RUNTIME=$(grep 'ATIME_INSTALL_RUNTIME' timings.txt | cut -d'=' -f2)" >> $GITHUB_ENV
+        echo "ATIME_TESTS_RUNTIME=$(grep 'ATIME_TESTS_RUNTIME' timings.txt | cut -d'=' -f2)" >> $GITHUB_ENV
       shell: bash
 
     - name: Upload results
