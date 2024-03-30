@@ -48,14 +48,28 @@ jobs:
         sudo apt-get install -y libgit2-dev
 
     - name: Install atime and initiate magic
-      env:
-        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        start=`date +%s`
-        R -e 'r = getOption("repos"); r["CRAN"] = "http://cran.us.r-project.org"; options(repos = r); install.packages("atime", dependencies = TRUE); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"))'
-        end=`date +%s`
-        runtime=$((end-start))
-        echo "ATIME_STEP_RUNTIME=$((end-start))" >> $GITHUB_ENV
+        #start=`date +%s`
+        R -e '
+          r = getOption("repos");
+          r["CRAN"] = "http://cran.us.r-project.org";
+          options(repos = r);
+          start_installation <- Sys.time();
+          install.packages("atime", dependencies = TRUE); 
+          finish_installation_start_running_tests <- Sys.time();
+          atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
+          finish_running_tests <- Sys.time();
+          installation_time <- as.numeric(difftime(finish_installation_start_running_tests, start_installation, units = "secs"));
+          tests_time <- as.numeric(difftime(finish_running_tests, finish_installation_start_running_tests, units = "secs"));
+          cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n", file="/dev/stderr");
+          cat("ATIME_PKG_RUNTIME=", tests_time, "\\n", file="/dev/stderr");
+             '
+        #end=`date +%s`
+        #runtime=$((end-start))
+        #echo "ATIME_STEP_RUNTIME=$((end-start))" >> $GITHUB_ENV
+        echo "ATIME_INSTALL_RUNTIME=${installation_time}" >> $GITHUB_ENV
+        echo "ATIME_TESTS_RUNTIME=${tests_time}" >> $GITHUB_ENV
+      shell: bash
 
     - name: Upload results
       id: artifact-upload-step
@@ -65,11 +79,11 @@ jobs:
         path: inst/atime/
 
     - name: Push generated plot along with relevant information on the PR thread as a GH-bot comment
-      env:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
-        echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
-        echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
-        echo "\nTime taken to install \`atime\` and run \`atime_pkg\` on the test(s): $((ATIME_STEP_RUNTIME%3600/60)) minutes and $((ATIME_STEP_RUNTIME%60)) seconds" >> report.md
+        echo -e "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
+        echo -e "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
+        echo -e "\nTime taken to install \`atime\`: $((ATIME_INSTALL_RUNTIME%3600/60)) minutes and $((ATIME_INSTALL_RUNTIME%60)) seconds" >> report.md
+        echo -e "\nTime taken to run \`atime::atime_pkg\` on the tests: $((ATIME_TESTS_RUNTIME%3600/60)) minutes and $((ATIME_TESTS_RUNTIME%60)) seconds" >> report.md
         cml comment update report.md
+      shell: bash
