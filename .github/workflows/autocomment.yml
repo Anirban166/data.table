@@ -48,8 +48,9 @@ jobs:
         sudo apt-get install -y libgit2-dev
 
     - name: Install atime and initiate magic
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        #start=`date +%s`
         R -e '
           r = getOption("repos");
           r["CRAN"] = "http://cran.us.r-project.org";
@@ -64,9 +65,6 @@ jobs:
           cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n", file="/dev/stderr");
           cat("ATIME_PKG_RUNTIME=", tests_time, "\\n", file="/dev/stderr");
              '
-        #end=`date +%s`
-        #runtime=$((end-start))
-        #echo "ATIME_STEP_RUNTIME=$((end-start))" >> $GITHUB_ENV
         echo "ATIME_INSTALL_RUNTIME=${installation_time}" >> $GITHUB_ENV
         echo "ATIME_TESTS_RUNTIME=${tests_time}" >> $GITHUB_ENV
       shell: bash
