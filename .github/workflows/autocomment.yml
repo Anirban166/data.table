@@ -94,4 +94,3 @@ jobs:
         echo -e "\nTime taken to install \`atime\`: $((ATIME_INSTALL_RUNTIME%3600/60)) minutes and $((ATIME_INSTALL_RUNTIME%60)) seconds" >> report.md
         echo -e "\nTime taken to run \`atime::atime_pkg\` on the tests: $((ATIME_TESTS_RUNTIME%3600/60)) minutes and $((ATIME_TESTS_RUNTIME%60)) seconds" >> report.md
         cml comment update report.md
-      shell: bash
