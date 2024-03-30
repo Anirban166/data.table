@@ -73,8 +73,8 @@ jobs:
           cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
              ' > timings.txt
              
-        echo "ATIME_INSTALL_RUNTIME=$(grep 'ATIME_INSTALL_RUNTIME' timings.txt | cut -d'=' -f2)" >> $GITHUB_ENV
-        echo "ATIME_TESTS_RUNTIME=$(grep 'ATIME_TESTS_RUNTIME' timings.txt | cut -d'=' -f2)" >> $GITHUB_ENV
+        echo "ATIME_INSTALL_RUNTIME=$(awk -F'=' '/ATIME_INSTALL_RUNTIME/ {print $2}' timings.txt | xargs)" >> $GITHUB_ENV
+        echo "ATIME_TESTS_RUNTIME=$(awk -F'=' '/ATIME_TESTS_RUNTIME/ {print $2}' timings.txt | xargs)" >> $GITHUB_ENV
       shell: bash
 
     - name: Upload results
