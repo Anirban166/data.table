@@ -77,6 +77,8 @@ jobs:
         path: inst/atime/
 
     - name: Push generated plot along with relevant information on the PR thread as a GH-bot comment
+      env:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo -e "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
