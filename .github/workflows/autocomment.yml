@@ -92,6 +92,8 @@ jobs:
       env:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        START_TIME=$(echo "${START_TIME}" | tr -dc '0-9')
+        END_TIME=$(echo "${END_TIME}" | tr -dc '0-9')
         SETUP_DURATION=$((END_TIME - START_TIME))
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
