@@ -89,8 +89,8 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
-        echo -e "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
-        echo -e "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
-        echo -e "\nTime taken to install \`atime\`: $((ATIME_INSTALL_RUNTIME%3600/60)) minutes and $((ATIME_INSTALL_RUNTIME%60)) seconds" >> report.md
-        echo -e "\nTime taken to run \`atime::atime_pkg\` on the tests: $((ATIME_TESTS_RUNTIME%3600/60)) minutes and $((ATIME_TESTS_RUNTIME%60)) seconds" >> report.md
+        echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
+        echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
+        echo "\nTime taken to install \`atime\`: $((ATIME_INSTALL_RUNTIME%3600/60)) minutes and $((ATIME_INSTALL_RUNTIME%60)) seconds" >> report.md
+        echo "\nTime taken to run \`atime::atime_pkg\` on the tests: $((ATIME_TESTS_RUNTIME%3600/60)) minutes and $((ATIME_TESTS_RUNTIME%60)) seconds" >> report.md
         cml comment update report.md
