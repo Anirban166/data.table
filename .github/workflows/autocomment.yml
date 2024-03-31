@@ -61,21 +61,17 @@ jobs:
           install.packages("atime", dependencies = TRUE);
                    '
         END_TIME=$(date +%s)
-        echo "END_TIME=${END_TIME}" >> $GITHUB_ENV
-          
+
         Rscript -e '
           start_running_tests <- Sys.time();
-
           r = getOption("repos"); r["CRAN"] = "http://cran.us.r-project.org"; options(repos = r);
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
-          
           finish_running_tests <- Sys.time();
-          
           tests_time <- ceiling(as.numeric(difftime(finish_running_tests, start_running_tests, units = "secs")));
-          
           cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
-             ' > timings.txt
-             
+                   ' > timings.txt
+
+        echo "END_TIME=${END_TIME}" >> $GITHUB_ENV     
         echo "ATIME_TESTS_RUNTIME=$(awk -F'=' '/ATIME_TESTS_RUNTIME/ {print $2}' timings.txt | cut -d'=' -f2 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
       shell: bash
 
@@ -90,9 +86,11 @@ jobs:
       env:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        # Cleaning up the strings for representing the start and end times of the setup: (to be numeric)
         START_TIME=$(echo "${START_TIME}" | tr -dc '0-9')
         END_TIME=$(echo "${END_TIME}" | tr -dc '0-9')
         SETUP_DURATION=$((END_TIME - START_TIME))
+
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
         echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
