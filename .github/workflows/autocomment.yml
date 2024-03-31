@@ -65,7 +65,10 @@ jobs:
           
         Rscript -e '
           start_running_tests <- Sys.time();
-          
+
+          r = getOption("repos");
+          r["CRAN"] = "http://cran.us.r-project.org";
+          options(repos = r);
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
           
           finish_running_tests <- Sys.time();
