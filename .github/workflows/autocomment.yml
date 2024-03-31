@@ -76,7 +76,7 @@ jobs:
           cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
              ' > timings.txt
              
-        echo "ATIME_TESTS_RUNTIME=$(awk -F'=' '/ATIME_TESTS_RUNTIME/ {print $2}' timings.txt | tr -d '[:space:]')" >> $GITHUB_ENV
+        echo "ATIME_TESTS_RUNTIME=$(awk -F'=' '/ATIME_TESTS_RUNTIME/ {print $2}' timings.txt | cut -d'=' -f2 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
       shell: bash
 
     - name: Upload results
