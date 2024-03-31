@@ -66,8 +66,8 @@ jobs:
           
           finish_running_tests <- Sys.time();
           
-          installation_time <- round(as.numeric(difftime(finish_installation_start_running_tests, start_installation, units = "secs")));
-          tests_time <- round(as.numeric(difftime(finish_running_tests, finish_installation_start_running_tests, units = "secs")));
+          installation_time <- ceiling(as.numeric(difftime(finish_installation_start_running_tests, start_installation, units = "secs")));
+          tests_time <- ceiling(as.numeric(difftime(finish_running_tests, finish_installation_start_running_tests, units = "secs")));
           
           cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n");
           cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
