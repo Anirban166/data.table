@@ -15,6 +15,9 @@ jobs:
     container: ghcr.io/iterative/cml:0-dvc2-base1
 
     steps:
+    - name: Start timer
+      run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+    
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -51,29 +54,27 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        R -e '
+        Rscript -e '
           r = getOption("repos");
           r["CRAN"] = "http://cran.us.r-project.org";
           options(repos = r);
-          
-          start_installation <- Sys.time();
-          
           install.packages("atime", dependencies = TRUE);
+                   '
+        END_TIME=$(date +%s)
+        echo "END_TIME=${END_TIME}" >> $GITHUB_ENV
           
-          finish_installation_start_running_tests <- Sys.time();
+        Rscript -e '
+          start_running_tests <- Sys.time();
           
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
           
           finish_running_tests <- Sys.time();
           
-          installation_time <- ceiling(as.numeric(difftime(finish_installation_start_running_tests, start_installation, units = "secs")));
-          tests_time <- ceiling(as.numeric(difftime(finish_running_tests, finish_installation_start_running_tests, units = "secs")));
+          tests_time <- ceiling(as.numeric(difftime(finish_running_tests, start_running_tests, units = "secs")));
           
-          cat("ATIME_INSTALL_RUNTIME=", installation_time, "\\n");
           cat("ATIME_TESTS_RUNTIME=", tests_time, "\\n");
              ' > timings.txt
              
-        echo "ATIME_INSTALL_RUNTIME=$(awk -F'=' '/ATIME_INSTALL_RUNTIME/ {print $2}' timings.txt | xargs | sed 's/ n>//' )" >> $GITHUB_ENV
         echo "ATIME_TESTS_RUNTIME=$(awk -F'=' '/ATIME_TESTS_RUNTIME/ {print $2}' timings.txt | xargs | sed 's/ n>//' )" >> $GITHUB_ENV
       shell: bash
 
@@ -88,9 +89,10 @@ jobs:
       env:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        SETUP_DURATION=$((END_TIME - START_TIME))
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
         echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
-        echo "\nTime taken to install \`atime\`: $((ATIME_INSTALL_RUNTIME%3600/60)) minutes and $((ATIME_INSTALL_RUNTIME%60)) seconds" >> report.md
+        echo "\nTime taken to finish the standard R installation steps: $((SETUP_DURATION%3600/60)) minutes and $((SETUP_DURATION%60)) seconds" >> report.md
         echo "\nTime taken to run \`atime::atime_pkg\` on the tests: $((ATIME_TESTS_RUNTIME%3600/60)) minutes and $((ATIME_TESTS_RUNTIME%60)) seconds" >> report.md
         cml comment update report.md
