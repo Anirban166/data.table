@@ -92,9 +92,11 @@ jobs:
       env:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        START_TIME=$(echo "${START_TIME}" | tr -dc '0-9')
-        END_TIME=$(echo "${END_TIME}" | tr -dc '0-9')
-        SETUP_DURATION=$((END_TIME - START_TIME))
+        START_TIME_TRIMMED=$(echo "${START_TIME}" | tr -dc '0-9')
+        END_TIME_TRIMMED=$(echo "${END_TIME}" | tr -dc '0-9')
+        echo "Sanitized START_TIME: $START_TIME_TRIMMED"
+        echo "Sanitized END_TIME: $END_TIME_TRIMMED"
+        SETUP_DURATION=$((END_TIME_TRIMMED - START_TIME_TRIMMED))
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
         echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
