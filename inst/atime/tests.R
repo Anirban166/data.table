@@ -62,7 +62,7 @@ test.list <- list(
         key = "g")
       dt_mod <- copy(dt)
     }),
-    "Before"="be2f72e6f5c90622fe72e1c315ca05769a9dc854",
+    "Before"="73c221f51c8b545bd5dd06719647aed384a2c4b2",
     "Regression"="e793f53466d99f86e70fc2611b708ae8c601a451",
     "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842"),
 
