@@ -42,7 +42,7 @@ test.list <- list(
       setindex(dt, a)
     }),
     expr = quote(data.table:::shallow(dt)),
-    "Before"="ad7b67c80a551b7a1e2ef8b73d6162ed7737c934",
+    "Before"="8c5042ca9aa5c6217b460fa5e8bf01003c7be358",
     "Regression"="752012f577f8e268bb6d0084ca39a09fa7fbc1c4", 
     "Fixed"="9d3b9202fddb980345025a4f6ac451ed26a423be"),
       
@@ -83,4 +83,3 @@ test.list <- list(
     "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
     "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
 )
-# Just a change to trigger my updated workflow and check/test output
