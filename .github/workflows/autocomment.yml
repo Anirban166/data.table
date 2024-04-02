@@ -55,17 +55,12 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        Rscript -e '
-          r = getOption("repos");
-          r["CRAN"] = "http://cran.us.r-project.org";
-          options(repos = r);
-          install.packages("atime", dependencies = TRUE);
-                   '
+        echo "options(repos = c(CRAN="http://cloud.r-project.org"))" >> ~/.Rprofile 
+        Rscript -e 'install.packages("atime", dependencies = TRUE);'
         END_TIME=$(date +%s)
 
         Rscript -e '
           start_running_tests <- Sys.time();
-          r = getOption("repos"); r["CRAN"] = "http://cran.us.r-project.org"; options(repos = r);
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
           finish_running_tests <- Sys.time();
           tests_time <- ceiling(as.numeric(difftime(finish_running_tests, start_running_tests, units = "secs")));
