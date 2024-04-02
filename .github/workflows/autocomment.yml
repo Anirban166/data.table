@@ -55,7 +55,7 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        echo "options(repos = c(CRAN="http://cloud.r-project.org"))" >> ~/.Rprofile 
+        echo 'options(repos = c(CRAN = "http://cloud.r-project.org"))' >> ~/.Rprofile
         Rscript -e 'install.packages("atime", dependencies = TRUE);'
         END_TIME=$(date +%s)
 
