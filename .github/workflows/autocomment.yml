@@ -29,6 +29,7 @@ jobs:
       run: |
         git config --global --add safe.directory '*'
 
+    # Explain, and try to eliminate this step
     - name: Manage refs
       run: |
         git switch "${GITHUB_BASE_REF}"
@@ -86,11 +87,13 @@ jobs:
       env:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        # Simplify this, don't use formatting, just write to a file
         # Cleaning up the strings for representing the start and end times of the setup: (to be numeric)
         START_TIME=$(echo "${START_TIME}" | tr -dc '0-9')
         END_TIME=$(echo "${END_TIME}" | tr -dc '0-9')
         SETUP_DURATION=$((END_TIME - START_TIME))
-
+        
+        # Define a shell function to do the modular arithmetic
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
         echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
