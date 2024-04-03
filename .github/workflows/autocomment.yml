@@ -56,14 +56,15 @@ jobs:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
         # Rscript -e "print(Sys.getenv('R_PROFILE_USER')); print(normalizePath('~/.Rprofile'))"
+        # echo "options(repos = c(CRAN = 'https://cloud.r-project.org'))" >> /github/home/.Rprofile
+        # cat /github/home/.Rprofile
         
-        echo "options(repos = c(CRAN = 'https://cloud.r-project.org'))" >> /github/home/.Rprofile
-        cat /github/home/.Rprofile
-        Rscript -e 'install.packages("atime", dependencies = TRUE);'
+        Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); install.packages("atime", dependencies = TRUE);'
         END_TIME=$(date +%s)
 
         Rscript -e '
           start_running_tests <- Sys.time();
+          options(repos = c(CRAN = "http://cloud.r-project.org"));
           atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));
           finish_running_tests <- Sys.time();
           tests_time <- ceiling(as.numeric(difftime(finish_running_tests, start_running_tests, units = "secs")));
