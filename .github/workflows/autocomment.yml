@@ -55,9 +55,16 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); install.packages("atime", dependencies = TRUE);'
+        #Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); install.packages("atime", dependencies = TRUE);'
+        
+        Rscript -e 'r = getOption("repos"); r["CRAN"] = "http://cran.us.r-project.org"; options(repos = r); install.packages("atime", dependencies = TRUE);'
+        
         echo "END_SETUP_START_TESTS_TIME=$(date +%s)" >> $GITHUB_ENV
-        Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
+        
+        #Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
+
+        Rscript -e 'r = getOption("repos"); r["CRAN"] = "http://cran.us.r-project.org"; options(repos = r); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
+        
         echo "END_TESTS_TIME=${END_TIME}" >> $GITHUB_ENV     
       shell: bash
 
