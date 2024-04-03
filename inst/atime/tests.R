@@ -42,6 +42,7 @@ test.list <- list(
       setindex(dt, a)
     }),
     expr = quote(data.table:::shallow(dt)),
+    #"Before"="", # Unknown source, and all the commit SHAs (each dating before March 20 '20, when the regression was noticed via issue #4311) I tried failed.   
     "Regression"="752012f577f8e268bb6d0084ca39a09fa7fbc1c4", 
     "Fixed"="9d3b9202fddb980345025a4f6ac451ed26a423be"),
       
@@ -61,7 +62,7 @@ test.list <- list(
         key = "g")
       dt_mod <- copy(dt)
     }),
-    "Before"="73c221f51c8b545bd5dd06719647aed384a2c4b2",
+    #"Before"="73c221f51c8b545bd5dd06719647aed384a2c4b2", # Previously working, currently fails.
     "Regression"="e793f53466d99f86e70fc2611b708ae8c601a451",
     "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842"),
 
