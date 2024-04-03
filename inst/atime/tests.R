@@ -43,8 +43,8 @@ test.list <- list(
     }),
     expr = quote(data.table:::shallow(dt)),
     #"Before"="", # Unknown source, and all the commit SHAs (each dating before March 20 '20, when the regression was noticed via issue #4311) I tried failed.   
-    "Regression"="752012f577f8e268bb6d0084ca39a09fa7fbc1c4", 
-    "Fixed"="9d3b9202fddb980345025a4f6ac451ed26a423be"),
+    "Slow"="752012f577f8e268bb6d0084ca39a09fa7fbc1c4", 
+    "Fast"="9d3b9202fddb980345025a4f6ac451ed26a423be"),
       
   # Test based on https://github.com/Rdatatable/data.table/issues/5424
   # Performance regression introduced in https://github.com/Rdatatable/data.table/pull/4491
@@ -63,8 +63,8 @@ test.list <- list(
       dt_mod <- copy(dt)
     }),
     #"Before"="73c221f51c8b545bd5dd06719647aed384a2c4b2", # Previously working, currently fails.
-    "Regression"="e793f53466d99f86e70fc2611b708ae8c601a451",
-    "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842"),
+    "Slow"="e793f53466d99f86e70fc2611b708ae8c601a451",
+    "Fast"="58409197426ced4714af842650b0cc3b9e2cb842"),
 
   # Test based on https://github.com/Rdatatable/data.table/issues/4200
   # Performance regression fixed in https://github.com/Rdatatable/data.table/pull/4558
@@ -79,7 +79,7 @@ test.list <- list(
       v1 = sample(5L, N, TRUE),
       v2 = sample(5L, N, TRUE))
     }),
-    "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
-    "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
-    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
+    #"Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
+    "Slow" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
+    "Fast" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
 )
