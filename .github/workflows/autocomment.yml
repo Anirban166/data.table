@@ -55,7 +55,10 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        Rscript -e "args <- commandArgs(trailingOnly = FALSE); print(args); vanilla <- '--vanilla' %in% args; cat('R running with --vanilla:', vanilla, '\n')"
+        echo "Sys.setenv(R_PROFILE_LOADED = 'TRUE')" >> /github/home/.Rprofile
+        echo "options(repos = c(CRAN = 'https://cloud.r-project.org'))" >> /github/home/.Rprofile
+        Rscript -e 'Sys.getenv("R_PROFILE_LOADED")'
+
         Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); install.packages("atime", dependencies = TRUE);'
         echo "END_SETUP_START_TESTS_TIME=$(date +%s)" >> $GITHUB_ENV
         Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
