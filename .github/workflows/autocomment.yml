@@ -29,7 +29,7 @@ jobs:
       run: |
         git config --global --add safe.directory '*'
 
-    # Explain, and try to eliminate this step
+    # Required for operations requiring a full git history or checks between branches.
     - name: Manage refs
       run: |
         git switch "${GITHUB_BASE_REF}"
