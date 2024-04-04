@@ -86,3 +86,4 @@ test.list <- list(
     "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
 )
 # Test to see if R is running with --vanilla
+# Test to see if R is reading .Rprofile (setting an environment variable and accessing it)
