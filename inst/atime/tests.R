@@ -87,3 +87,4 @@ test.list <- list(
 )
 # Test to see if R is running with --vanilla
 # Test to see if R is reading .Rprofile (setting an environment variable and accessing it)
+# Debugging more to make the switch to using .Rprofile
