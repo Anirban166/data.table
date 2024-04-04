@@ -30,13 +30,10 @@ jobs:
         git config --global --add safe.directory '*'
 
     # Required for operations requiring a full git history or checks between branches.
-    - name: Manage refs
+    - name: git switch
       run: |
         git switch "${GITHUB_BASE_REF}"
         git switch "${GITHUB_HEAD_REF}"
-        git for-each-ref --format="%(refname)" | while read ref; do
-          git show-ref --quiet --verify $ref 2>/dev/null || git update-ref -d $ref
-        done
       shell: bash
 
     - name: R Setup
@@ -88,7 +85,6 @@ jobs:
             echo "${minutes} minutes and ${seconds} seconds"
         }        
         
-        # Define a shell function to do the modular arithmetic
         echo "![Comparison Plot](./inst/atime/tests_all_facet.png)" >> report.md
         echo "\nGenerated via commit ${{ github.event.pull_request.head.sha }}" >> report.md
         echo "\nDownload link for the artifact containing the test results: [↓ atime-results.zip](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ steps.artifact-upload-step.outputs.artifact-id }})" >> report.md
