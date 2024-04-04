@@ -55,15 +55,11 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       run: |
-        echo $R_PROFILE_USER
         cp /github/home/.Rprofile .
-        echo "Sys.setenv(R_PROFILE_LOADED = 'TRUE')" >> .Rprofile
         echo "options(repos = c(CRAN = 'https://cloud.r-project.org'))" >> .Rprofile
-        Rscript -e 'Sys.getenv("R_PROFILE_LOADED")'
-
-        Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); install.packages("atime", dependencies = TRUE);'
+        Rscript -e 'install.packages("atime", dependencies = TRUE);'
         echo "END_SETUP_START_TESTS_TIME=$(date +%s)" >> $GITHUB_ENV
-        Rscript -e 'options(repos = c(CRAN = "http://cloud.r-project.org")); atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
+        Rscript -e 'atime::atime_pkg(Sys.getenv("GITHUB_WORKSPACE"));'
         echo "END_TESTS_TIME=$(date +%s)" >> $GITHUB_ENV
       shell: bash
 
