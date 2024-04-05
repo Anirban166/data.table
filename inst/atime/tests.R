@@ -42,7 +42,7 @@ test.list <- list(
       setindex(dt, a)
     }),
     expr = quote(data.table:::shallow(dt)),
-    "Before"="ad7b67c80a551b7a1e2ef8b73d6162ed7737c934",
+    "Before"="9d3b9202fddb980345025a4f6ac451ed26a423be",
     "Regression"="752012f577f8e268bb6d0084ca39a09fa7fbc1c4", 
     "Fixed"="9d3b9202fddb980345025a4f6ac451ed26a423be"),
 
