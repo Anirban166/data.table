@@ -29,7 +29,7 @@ jobs:
       run: |
         git config --global --add safe.directory '*'
 
-    # To ensure local branch references exist and can be found when using git2r::revparse_single: 
+    # To ensure local branch references exist and can be found when using git2r::revparse_single: (for more information, please check https://github.com/Anirban166/Autocomment-atime-results/issues/33#issuecomment-2038431272 and the comments below that)
     - name: Retrieve branch references
       run: |
         git switch "${GITHUB_BASE_REF}"
