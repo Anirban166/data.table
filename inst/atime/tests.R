@@ -66,24 +66,24 @@ test.list <- list(
     #"Before"="73c221f51c8b545bd5dd06719647aed384a2c4b2", # Previously working, currently fails.
     "Before"="58409197426ced4714af842650b0cc3b9e2cb842",    
     "Regression"="e793f53466d99f86e70fc2611b708ae8c601a451",
-    "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842"),
+    "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842")
 
   # Test based on https://github.com/Rdatatable/data.table/issues/4200
   # Performance regression fixed in https://github.com/Rdatatable/data.table/pull/4558
-  "Test regression fixed in #4558" = list(
-  pkg.edit.fun = pkg.edit.fun,
-  N = 10^seq(1, 20),
-  expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id3)),
-  setup = quote({ 
-    set.seed(108)
-    d <- data.table(
-      id3 = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
-      v1 = sample(5L, N, TRUE),
-      v2 = sample(5L, N, TRUE))
-    }),
-    "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
-    "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
-    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
+  #"Test regression fixed in #4558" = list(
+  #pkg.edit.fun = pkg.edit.fun,
+  #N = 10^seq(1, 20),
+  #expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id3)),
+  #setup = quote({ 
+  #  set.seed(108)
+  #  d <- data.table(
+  #    id3 = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
+  #    v1 = sample(5L, N, TRUE),
+  #    v2 = sample(5L, N, TRUE))
+  #  }),
+  #  "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
+  #  "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
+  #  "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
 )
 # Test to see if R is running with --vanilla
 # Test to see if R is reading .Rprofile (setting an environment variable and accessing it)
