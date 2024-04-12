@@ -18,4 +18,4 @@ jobs:
       repo_token: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     steps:
-      - uses: Anirban166/Autocomment-atime-results@v1.1.0
+      - uses: Anirban166/Autocomment-atime-results@v1.1.6
