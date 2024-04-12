@@ -67,3 +67,4 @@ test.list <- list(
     Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31", # The regression commit is the parent of the first commit in the PR that fixed the issue (https://github.com/Rdatatable/data.table/pull/5493/commits)
     Fixed = "58409197426ced4714af842650b0cc3b9e2cb842") # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5493/commits)    
 )
+# Test to see if the workflow is triggered with the path filter spec
