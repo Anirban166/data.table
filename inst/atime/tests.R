@@ -1,3 +1,26 @@
+# A function to customize R package metadata and source files to facilitate version-specific installation and testing.
+#
+# This is specifically tailored for handling data.table which requires specific changes in non-standard files (such as the object file name in `Makevars` and version checking code in `onLoad.R`) 
+# to support testing across different versions (base and HEAD for PRs, commits associated with historical regressions, etc.) of the package. 
+# It appends a SHA1 hash to the package name (`PKG.SHA`), ensuring each version can be installed and tested separately.
+#
+# @param old.Package Current name of the package.
+# @param new.Package New name of the package, including a SHA hash.
+# @param sha SHA1 hash used for differentiating versions.
+# @param new.pkg.path Path to the package files.
+#
+# @details
+# The function modifies:
+# - DESCRIPTION, updating the package name.
+# - Makevars, customizing the shared object file name and adjusting the build settings.
+# - R/onLoad.R, adapting custom version checking for package loading operations.
+# - NAMESPACE, changing namespace settings for dynamic linking.
+#
+# @examples
+# pkg.edit.fun("data.table", "data.table.some_40_digit_SHA1_hash", "some_40_digit_SHA1_hash", "/path/to/data.table")
+#
+# @return None (performs in-place file modifications)
+# @note This setup is typically unnecessary for most packages but essential for `data.table` due to its unique configuration.
 pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
       pkg_find_replace <- function(glob, FIND, REPLACE) {
         atime::glob_find_replace(file.path(new.pkg.path, glob), FIND, REPLACE)
@@ -63,8 +86,7 @@ test.list <- list(
         key = "g")
       dt_mod <- copy(dt)
     }),
-    Before = "19b7866112614db53eb3e909c097407d91cd6738", # Parent of the regression commit (https://github.com/Rdatatable/data.table/commit/0895fa247afcf6b38044bd5f56c0d209691ddb31), which is the parent of the first commit in the PR that causes the issue (https://github.com/Rdatatable/data.table/pull/5493/commits) 
-    Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31", # The regression commit is the parent of the first commit in the PR that fixed the issue (https://github.com/Rdatatable/data.table/pull/5493/commits)
-    Fixed = "58409197426ced4714af842650b0cc3b9e2cb842") # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5493/commits)    
+    Before = "be2f72e6f5c90622fe72e1c315ca05769a9dc854", # Commit preceding the regression causing commit (https://github.com/Rdatatable/data.table/pull/4491/commits/e793f53466d99f86e70fc2611b708ae8c601a451) in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
+    Regression = "e793f53466d99f86e70fc2611b708ae8c601a451", # Commit responsible for regression in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
+    Fixed = "58409197426ced4714af842650b0cc3b9e2cb842") # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5463/commits)    
 )
-# Test to see if the workflow is triggered with the path filter spec
