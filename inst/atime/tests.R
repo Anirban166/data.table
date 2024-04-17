@@ -111,11 +111,11 @@ test.list <- list(
   "Test regression fixed in #4558" = list(
   pkg.edit.fun = pkg.edit.fun,
   N = 10^seq(1, 20),
-  expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id3)),
+  expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id)),
   setup = quote({ 
     set.seed(108)
     d <- data.table(
-      id3 = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
+      id = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
       v1 = sample(5L, N, TRUE),
       v2 = sample(5L, N, TRUE))
     }),
