@@ -104,5 +104,22 @@ test.list <- list(
     expr = quote(data.table:::`[.data.table`(dt_mod, , N := .N, by = g)),    
     Before = "be2f72e6f5c90622fe72e1c315ca05769a9dc854", # Commit preceding the regression causing commit (https://github.com/Rdatatable/data.table/pull/4491/commits/e793f53466d99f86e70fc2611b708ae8c601a451) in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
     Regression = "e793f53466d99f86e70fc2611b708ae8c601a451", # Commit responsible for regression in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
-    Fixed = "58409197426ced4714af842650b0cc3b9e2cb842") # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5463/commits)    
+    Fixed = "58409197426ced4714af842650b0cc3b9e2cb842"), # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5463/commits)
+
+  # Test based on https://github.com/Rdatatable/data.table/issues/4200
+  # Performance regression fixed in: https://github.com/Rdatatable/data.table/pull/4558
+  "Test regression fixed in #4558" = list(
+  pkg.edit.fun = pkg.edit.fun,
+  N = 10^seq(1, 20),
+  expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id3)),
+  setup = quote({ 
+    set.seed(108)
+    d <- data.table(
+      id3 = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
+      v1 = sample(5L, N, TRUE),
+      v2 = sample(5L, N, TRUE))
+    }),
+    "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
+    "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
+    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
 )
