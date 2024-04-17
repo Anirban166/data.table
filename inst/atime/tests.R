@@ -120,6 +120,6 @@ test.list <- list(
       v2 = sample(5L, N, TRUE))
     }),
     "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
-    "Regression" = "6f360be0b2a6cf425f6df751ca9a99ec5d35ed93",
-    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6")   
+    "Regression" = "c0052964694a4c618ab182aa474f924d40576d94", # Since regression was reported on Jan 26 2020 (https://github.com/Rdatatable/data.table/issues/4200)
+    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6") # Merge commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/4558)  
 )
