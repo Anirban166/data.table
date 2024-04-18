@@ -73,7 +73,7 @@ pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
 test.list <- list(
   # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
-  "Test regression fixed in #4440" = list(
+  "Test performance regression fixed in #4440" = list(
     pkg.edit.fun = pkg.edit.fun,
     N = 10^seq(3,8),
     setup = quote({
@@ -89,7 +89,7 @@ test.list <- list(
   # Test based on: https://github.com/Rdatatable/data.table/issues/5424
   # Performance regression introduced from a commit in: https://github.com/Rdatatable/data.table/pull/4491
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5463    
-  "Test regression fixed in #5463" = list(
+  "Test performance regression fixed in #5463" = list(
     pkg.edit.fun = pkg.edit.fun,
     N = 10^seq(3, 8),
     setup = quote({
@@ -124,14 +124,14 @@ test.list <- list(
   #  "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6"), # Merge commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/4558)
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/5426
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/5427
-  "Test regression fixed in #5427" = list(
+  # To be fixed in: https://github.com/Rdatatable/data.table/pull/5427
+  "Test performance improvement implemented in #5427" = list(
   pkg.edit.fun = pkg.edit.fun,     
   N = 10^seq(1, 7),
   setup = quote({ 
     DT = replicate(N, 1, simplify = FALSE)
   }),
   expr = quote(data.table:::setDT(DT)),
-  "Slow"= "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
-  "Fast"="1872f473b20fdcddc5c1b35d79fe9229cd9a1d15") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)  
+  "Slow" = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
+  "Fast" = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)  
 )
