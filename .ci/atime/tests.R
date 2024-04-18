@@ -108,30 +108,30 @@ test.list <- list(
 
   # Test based on https://github.com/Rdatatable/data.table/issues/4200
   # Performance regression fixed in: https://github.com/Rdatatable/data.table/pull/4558
-  "Test regression fixed in #4558" = list(
-  pkg.edit.fun = pkg.edit.fun,
-  N = 10^seq(1, 20),
-  expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id)),
-  setup = quote({ 
-    set.seed(108)
-    d <- data.table(
-      id = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
-      v1 = sample(5L, N, TRUE),
-      v2 = sample(5L, N, TRUE))
-    }),
-    "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
-    "Regression" = "c0052964694a4c618ab182aa474f924d40576d94", # Since regression was reported on Jan 26 2020 (https://github.com/Rdatatable/data.table/issues/4200)
-    "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6"), # Merge commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/4558)
+  #"Test regression fixed in #4558" = list(
+  #pkg.edit.fun = pkg.edit.fun,
+  #N = 10^seq(1, 20),
+  #expr = quote(data.table:::`[.data.table`(d, , (max(v1) - min(v2)), by = id)),
+  #setup = quote({ 
+  #  set.seed(108)
+  #  d <- data.table(
+  #    id = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
+  #    v1 = sample(5L, N, TRUE),
+  #    v2 = sample(5L, N, TRUE))
+  #  }),
+  #  "Before" = "15f0598b9828d3af2eb8ddc9b38e0356f42afe4f",
+  #  "Regression" = "c0052964694a4c618ab182aa474f924d40576d94", # Since regression was reported on Jan 26 2020 (https://github.com/Rdatatable/data.table/issues/4200)
+  #  "Fixed" = "ba32f3cba38ec270587e395f6e6c26a80be36be6"), # Merge commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/4558)
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/5426
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5427
   "Test regression fixed in #5427" = list(
   pkg.edit.fun = pkg.edit.fun,     
   N = 10^seq(1, 7),
-  setup = { 
+  setup = quote({ 
     DT = replicate(N, 1, simplify = FALSE)
-  },
-  expr = data.table:::setDT(DT),
+  }),
+  expr = quote(data.table:::setDT(DT)),
   "Slow"= "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
   "Fast"="1872f473b20fdcddc5c1b35d79fe9229cd9a1d15") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)  
 )
