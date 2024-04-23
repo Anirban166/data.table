@@ -130,6 +130,7 @@ test.list <- list(
   N = 10^seq(1, 7),
   setup = quote({ 
     L <- replicate(N, 1, simplify = FALSE)
+    setDT(L)    
   }),
   expr = quote(data.table:::setattr(L, "class", NULL); data.table:::setDT(DT)),
   Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
