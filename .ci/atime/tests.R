@@ -129,8 +129,7 @@ test.list <- list(
   pkg.edit.fun = pkg.edit.fun,     
   N = 10^seq(1, 7),
   setup = quote({ 
-    L <- replicate(N, 1, simplify = FALSE)
-    setDT(L)    
+    L <- replicate(N, 1, simplify = FALSE)   
   }),
   expr = quote({
     data.table:::setattr(L, "class", NULL) 
@@ -138,3 +137,4 @@ test.list <- list(
   }),
   Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
   Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)  
+)
