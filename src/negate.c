@@ -11,7 +11,6 @@ void negateByRef(SEXP x) {
   }
 }
 
-
 SEXP notchin(SEXP x, SEXP table) {
   // see discussion in PR#4931
   SEXP result = PROTECT(chin(x, table));
