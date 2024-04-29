@@ -72,7 +72,7 @@ pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
 #   When there was no regression, use 'Slow' and 'Fast' 
 # @note Please check https://github.com/tdhock/atime/blob/main/vignettes/data.table.Rmd for more information.
 # nolint start: undesirable_operator_linter. ':::' needed+appropriate here.
-test.list <- atime::atime_test_list(
+test.list <- list(
   # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
   "shallow regression fixed in #4440" = atime::atime_test(
