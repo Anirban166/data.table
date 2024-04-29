@@ -75,8 +75,8 @@ pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
 test.list <- atime::atime_test_list(
   # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
-  pkg.edit.fun = pkg.edit.fun,
   "shallow regression fixed in #4440" = atime::atime_test(
+    pkg.edit.fun = pkg.edit.fun,    
     N = 10^seq(3,8),
     setup = {
       set.seed(1L)
@@ -92,6 +92,7 @@ test.list <- atime::atime_test_list(
   # Performance regression introduced from a commit in: https://github.com/Rdatatable/data.table/pull/4491
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5463
   "memrecycle regression fixed in #5463" = atime::atime_test(
+    pkg.edit.fun = pkg.edit.fun,    
     N = 10^seq(3, 8),
     setup = {
       n <- N/100
@@ -110,6 +111,7 @@ test.list <- atime::atime_test_list(
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/5426
   # To be fixed in: https://github.com/Rdatatable/data.table/pull/5427
   "setDT improved in #5427" = atime::atime_test(
+    pkg.edit.fun = pkg.edit.fun,    
     N = 10^seq(1, 7),
     setup = {
       L <- replicate(N, 1, simplify = FALSE)
