@@ -95,5 +95,6 @@ test.list <- atime::atime_test_list(
       data.table:::setDT(L)
     },
     Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
-    Fast = "2487c61656335764980e478c323f7e6ce4e6d4ca") # Merge commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427)
+    Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits) for my fork here.
+    # Merge commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427) # <-- This too would probably work but in my fork I don't have any commits beyond 1872f473b20fdcddc5c1b35d79fe9229cd9a1d15 for that branch,
 )
