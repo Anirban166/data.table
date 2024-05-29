@@ -152,7 +152,7 @@ test.list <- atime::atime_test_list(
     }
    },
    Slow = "d47a83fb2e25582e508f191f87a31ca81b736b57", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
-   Fast ="958e3dd3cba7c259220aa653bef4beb8ad74b239") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
+   Fast = "958e3dd3cba7c259220aa653bef4beb8ad74b239"), # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
 
    "[6]" = atime::atime_test( 
    N = 10^seq(1, 7),
