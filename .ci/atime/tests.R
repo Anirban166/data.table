@@ -136,23 +136,23 @@ test.list <- atime::atime_test_list(
   Regression = "e793f53466d99f86e70fc2611b708ae8c601a451",
   Fixed = "58409197426ced4714af842650b0cc3b9e2cb842"),
 
-  #"[3]" = atime::atime_test(  
-  # N = 10^seq(1, 20),
-  # setup = { 
-  #  allIterations <- data.frame(v1 = runif(N), v2 = runif(N))
-  #  DoSomething <- function(row) {
-  #    someCalculation <- row[["v1"]] + 1
-  #  }
-  #    allIteration_dt <- as.data.table(allIterations)
-  #    setDTthreads(1)
-  # },
-  # expr = {
-  #  for(r in 1:nrow(allIterations)) {
-  #    DoSomething(data.table:::`[.data.table`(allIterations, r, ))
-  #  }
-  # },
-  # Slow = "d47a83fb2e25582e508f191f87a31ca81b736b57", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
-  # Fast ="958e3dd3cba7c259220aa653bef4beb8ad74b239") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
+  "[3]" = atime::atime_test(  
+   N = 10^seq(1, 20),
+   setup = { 
+    allIterations <- data.frame(v1 = runif(N), v2 = runif(N))
+    DoSomething <- function(row) {
+      someCalculation <- row[["v1"]] + 1
+    }
+      allIteration_dt <- as.data.table(allIterations)
+      setDTthreads(1)
+   },
+   expr = {
+    for(r in 1:nrow(allIterations)) {
+      DoSomething(data.table:::`[.data.table`(allIterations, r, ))
+    }
+   },
+   Slow = "d47a83fb2e25582e508f191f87a31ca81b736b57", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
+   Fast ="958e3dd3cba7c259220aa653bef4beb8ad74b239") # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4488/commits)
 
    "[6]" = atime::atime_test( 
    N = 10^seq(1, 7),
@@ -172,27 +172,27 @@ test.list <- atime::atime_test_list(
    },
    expr = data.table:::`[.data.table`(dt, , value[[1L]], by = id),
    Slow = "db618444a4d16b91cccf35d80fa3f306739dd571", #parent of the first commit in the PR that fixes the issue(https://github.com/Rdatatable/data.table/pull/4655/commits)
-   Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f"), #This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
+   Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f") #This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
 
-   "[7, 2]" = atime::atime_test( 
-   N = 10^seq(1, 7),
-   setup = { 
-   dt <- data.table('id'= N,
-                     'list_col'=sample(c('', '', 'a', 'a:b', 'a:b:c'), 20000, TRUE))
-   feature <- 'list_col'
-   },
-   expr=data.table:::`[.data.table`(dt[, c("id", feature), with = FALSE][
-    , feature_names := {
-      x <- get(feature)
-      stringr::str_split(x, ':')
-    }][
-      , .(
-        feature_names = paste0(feature, "_", unlist(feature_names))
-      )
-      , by = "id"]
-   , times = 10
-   , unit = 'ms'),
-   Slow = "db618444a4d16b91cccf35d80fa3f306739dd571", # Parent of the first commit in the PR that fixes the issue(https://github.com/Rdatatable/data.table/pull/4655/commits)
-   Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f") # This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
+   #"[7, 2]" = atime::atime_test( 
+   #N = 10^seq(1, 7),
+   #setup = { 
+   #dt <- data.table('id'= N,
+   #                  'list_col'=sample(c('', '', 'a', 'a:b', 'a:b:c'), 20000, TRUE))
+   #feature <- 'list_col'
+   #},
+   #expr = data.table:::`[.data.table`(dt[, c("id", feature), with = FALSE][
+   # , feature_names := {
+   #   x <- get(feature)
+   #   stringr::str_split(x, ':')
+   # }][
+   #   , .(
+   #     feature_names = paste0(feature, "_", unlist(feature_names))
+   #   )
+   #   , by = "id"]
+   #, times = 10
+   #, unit = 'ms'),
+   #Slow = "db618444a4d16b91cccf35d80fa3f306739dd571", # Parent of the first commit in the PR that fixes the issue(https://github.com/Rdatatable/data.table/pull/4655/commits)
+   #Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f") # This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
 )
 # nolint end: undesirable_operator_linter.
