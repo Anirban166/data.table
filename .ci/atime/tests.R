@@ -161,18 +161,18 @@ test.list <- atime::atime_test_list(
    },
    expr = data.table:::`[.data.table`(DT,, shift(x, 1, type = "lag"), y),
    Regression = "7f0ce147eef1dd5cd5ff05dffc3c72f472bcde51", # Parent of the first commits in the PR that fixes the issue6(https://github.com/Rdatatable/data.table/commit/58135017a985f3cc2c6f0d091c4effaec4442f56)
-   Fixed = "a6abac319446ae7dde8bc4501fae40eeb5cc228c") # Commit before the last commit in the PR that fixes the regression(https://github.com/Rdatatable/data.table/pull/5205/commits)
+   Fixed = "a6abac319446ae7dde8bc4501fae40eeb5cc228c"), # Commit before the last commit in the PR that fixes the regression(https://github.com/Rdatatable/data.table/pull/5205/commits)
 
-   #"[7, 1]" = atime::atime_test(  
-   #N = 10^seq(1, 7),
-   #setup = { 
-   # n_nested = 40L
-   # dt = data.table(id = seq_len(N),
-   #                 value = replicate(N, data.table(val1 = sample(n_nested)), simplify = FALSE))
-   #},
-   #expr = data.table:::`[.data.table`(dt, , value[[1L]], by = id),
-   #Slow = "db618444a4d16b91cccf35d80fa3f306739dd571", #parent of the first commit in the PR that fixes the issue(https://github.com/Rdatatable/data.table/pull/4655/commits)
-   #Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f") #This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
+   "[7, 1]" = atime::atime_test(  
+   N = 10^seq(1, 7),
+   setup = { 
+    n_nested = 40L
+    dt = data.table(id = seq_len(N),
+                    value = replicate(N, data.table(val1 = sample(n_nested)), simplify = FALSE))
+   },
+   expr = data.table:::`[.data.table`(dt, , value[[1L]], by = id),
+   Slow = "db618444a4d16b91cccf35d80fa3f306739dd571", #parent of the first commit in the PR that fixes the issue(https://github.com/Rdatatable/data.table/pull/4655/commits)
+   Fast = "ec041f78691f9f9495c0f25b78109cd3f5295f4f") #This is the last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/4655/commits)
 
    #"[7, 2]" = atime::atime_test( 
    #N = 10^seq(1, 7),
