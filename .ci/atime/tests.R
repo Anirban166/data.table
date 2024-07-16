@@ -98,19 +98,13 @@ test.list <- atime::atime_test_list(
     Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15"), # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits) for my fork here.
     # Merge commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427) # <-- This too would probably work but in my fork I don't have any commits beyond 1872f473b20fdcddc5c1b35d79fe9229cd9a1d15 for that branch,
 
-  # Issue reported in: https://github.com/Rdatatable/data.table/issues/5426
-  # To be fixed in: https://github.com/Rdatatable/data.table/pull/5427
-  "[1, 2]" = atime::atime_test(
-    N = 10^seq(1, 4),
-    setup = { 
-    set.seed(123L)
-    dt <- data.table(
-      id = seq_len(N),
-      val = rnorm(N))
-    dt
+  # Issue reported in: https://github.com/Rdatatable/data.table/issues/6286
+  "by verbose arg" = atime::atime_test(
+    N = 10^seq(1, 7),
+    setup = {
+    dt = data.table(a = 1:N)
   },
- expr = data.table:::`[.data.table`(dt, , .(vs = (sum(val))), by = .(id)),
-  "Before"="be2f72e6f5c90622fe72e1c315ca05769a9dc854",
-  "Regression"="e793f53466d99f86e70fc2611b708ae8c601a451",
-  "Fixed"="58409197426ced4714af842650b0cc3b9e2cb842")
+ expr = system.time(copy(dt)[, 1, data.table:::by = a, verbose = TRUE]),
+  "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e",
+  "Fast" = "aa75d79376478b3e8f80fd6f31dcf53be8bf3404")
 )
