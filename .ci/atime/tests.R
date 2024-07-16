@@ -17,8 +17,6 @@
 # @note Please check https://github.com/tdhock/atime/blob/main/vignettes/data.table.Rmd for more information.
 # nolint start: undesirable_operator_linter. ':::' needed+appropriate here.
 test.list <- atime::atime_test_list(
-  # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
   pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
       pkg_find_replace <- function(glob, FIND, REPLACE) {
         atime::glob_find_replace(file.path(new.pkg.path, glob), FIND, REPLACE)
@@ -51,6 +49,7 @@ test.list <- atime::atime_test_list(
         sprintf('useDynLib\\("?%s"?', Package_regex),
         paste0('useDynLib(', new.Package_))
     },    
+  
   "shallow regression fixed in #4440" = atime::atime_test(
     N = 10^seq(3,8),
     setup = {

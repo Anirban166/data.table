@@ -169,7 +169,7 @@ as.data.table.list = function(x,
       #       not worse than before, and gets us in a better centralized place to port as.data.table.list to C and use MAYBE_REFERENCED
       #       again in future, for #617.
     }
-    if (identical(x,list())) vector("list", nrow) else rep(x, length.out=nrow)   # new objects don't need copy
+    if (identical(x, list())) vector("list", nrow) else rep_len(x, nrow)   # new objects don't need copy
   }
   vnames = character(ncol)
   k = 1L
@@ -223,7 +223,7 @@ as.data.table.data.frame = function(x, keep.rownames=FALSE, key=NULL, ...) {
       setnames(ans, 'rn', keep.rownames[1L])
     return(ans)
   }
-  if (any(vapply_1i(x, function(xi) length(dim(xi))))) { # not is.atomic because is.atomic(matrix) is true
+  if (any(cols_with_dims(x))) {
     # a data.frame with a column that is data.frame needs to be expanded; test 2013.4
     # x may be a class with [[ method that behaves differently, so as.list first for default [[, #4526
     return(as.data.table.list(as.list(x), keep.rownames=keep.rownames, ...))
@@ -245,7 +245,7 @@ as.data.table.data.frame = function(x, keep.rownames=FALSE, key=NULL, ...) {
 
 as.data.table.data.table = function(x, ...) {
   # as.data.table always returns a copy, automatically takes care of #473
-  if (any(vapply_1i(x, function(xi) length(dim(xi))))) { # for test 2089.2
+  if (any(cols_with_dims(x))) { # for test 2089.2
     return(as.data.table.list(x, ...))
   }
   x = copy(x) # #1681
