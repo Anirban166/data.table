@@ -99,11 +99,11 @@ test.list <- atime::atime_test_list(
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/6286
   "by verbose arg" = atime::atime_test(
-    N = 10^seq(1, 7),
+    N = 10^seq(6, 7),
     setup = {
     dt = data.table(a = 1:N)
   },
- expr = system.time(data.table:::copy(dt)[, 1, by = a, verbose = TRUE]),
+ expr = data.table:::copy(dt)[, 1, by = a, verbose = TRUE],
   "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e",
   "Fast" = "aa75d79376478b3e8f80fd6f31dcf53be8bf3404")
 )
