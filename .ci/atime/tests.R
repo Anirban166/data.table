@@ -105,5 +105,5 @@ test.list <- atime::atime_test_list(
   },
  expr = data.table:::copy(dt)[, 1, by = a, verbose = TRUE],
   "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e",
-  "Fast" = "aa75d79376478b3e8f80fd6f31dcf53be8bf3404")
+  "Fast" = "cd497408bb4dc6650d871b5076e738420ff431d7")
 )
