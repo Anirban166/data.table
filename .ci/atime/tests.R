@@ -76,7 +76,7 @@ test.list <- atime::atime_test_list(
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5493 (off-branch)
   # Merged to master in: https://github.com/Rdatatable/data.table/commit/2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7
   "transform regression fixed in #5493" = atime::atime_test(
-    N=10^seq(1, 20),
+    N = 10^seq(1, 20),
     setup = {
       set.seed(108)
       df <- data.frame(x = runif(N))
@@ -85,6 +85,8 @@ test.list <- atime::atime_test_list(
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
     Before = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb", # Parent of the commit that fixed the regression.
     # Regression = "",
-    Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
+    Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7",
+    After = "f505965752df1377c96636685d5e7690f8fa4cf7",
+    Jan24 = "dc4c1ea1a23022c467f68c029f04082d8992914d")
 )
 # nolint end: undesirable_operator_linter.
