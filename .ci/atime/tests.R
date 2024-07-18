@@ -122,13 +122,13 @@ test.list <- atime::atime_test_list(
     Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15"), # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/6286
-  "by verbose arg" = atime::atime_test(
-    N = 10^seq(6, 8),
+  "by with verbose = TRUE" = atime::atime_test(
+    N = 10^seq(1, 8),
     setup = {
-    dt = data.table(a = 1:N)
-  },
+      dt = data.table(a = 1:N)
+    },
  expr = data.table:::copy(dt)[, 1, by = a, verbose = TRUE],
-  "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e",
-  "Fast" = "aa75d79376478b3e8f80fd6f31dcf53be8bf3404")
+ "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e",
+ "Fast" = "cd497408bb4dc6650d871b5076e738420ff431d7")
 )
 # nolint end: undesirable_operator_linter.
