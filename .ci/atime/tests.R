@@ -81,8 +81,8 @@ test.list <- atime::atime_test_list(
       dt = data.table(a = 1:N)
       dt_mod <- copy(dt)
     },
- expr = data.table:::`[.data.table`(dt_mod, , 1, by = a, verbose = TRUE)
- "Slow" = "a01f00f7438daf4612280d6886e6929fa8c8f76e" # Using the latest version of data.table I have in my fork (master branch, does not include the improvement thus slow). Just replace this with the preceding commit in data.table's master or the parent of the initial commit in the PR that fixes the issue.
+ expr = data.table:::`[.data.table`(dt_mod, , 1, by = a, verbose = TRUE),
+ Slow = "cd497408bb4dc6650d871b5076e738420ff431d7" # Using the latest version of data.table I have in my fork (master branch, does not include the improvement thus slow). Just replace this with the preceding commit in data.table's master or the parent of the initial commit in the PR that fixes the issue.
  # Fast = "" <-- Just change it to the mc or last commit after that PR is merged.
  )
 )
