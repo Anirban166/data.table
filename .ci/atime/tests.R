@@ -123,7 +123,7 @@ test.list <- atime::atime_test_list(
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/6286
   "by with verbose = TRUE" = atime::atime_test(
-    N = 10^seq(1, 8),
+    N = 10^seq(5, 9),
     setup = {
       dt = data.table(a = 1:N)
     },
