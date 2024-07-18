@@ -51,7 +51,7 @@ test.list <- atime::atime_test_list(
     },    
   
   "shallow regression fixed in #4440" = atime::atime_test(
-    N = 10^seq(3,8),
+    N = 10^seq(3, 8),
     setup = {
       set.seed(1L)
       dt <- data.table(a = sample.int(N))
@@ -98,8 +98,8 @@ test.list <- atime::atime_test_list(
     # Merge commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427) # <-- This too would probably work but in my fork I don't have any commits beyond 1872f473b20fdcddc5c1b35d79fe9229cd9a1d15 for that branch,
 
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/6286
-  "by verbose arg" = atime::atime_test(
-    N = 10^seq(6, 7),
+  "by with verbose = TRUE" = atime::atime_test(
+    N = 10^seq(1, 8),
     setup = {
     dt = data.table(a = 1:N)
   },
