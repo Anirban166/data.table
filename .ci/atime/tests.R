@@ -78,6 +78,7 @@ test.list <- atime::atime_test_list(
   "transform regression fixed in #5493" = atime::atime_test(
     N = 10^seq(1, 20),
     setup = {
+      set.seed(108)
       df <- data.frame(x = runif(N))
       dt <- as.data.table(df)
     },
