@@ -83,8 +83,8 @@ test.list <- atime::atime_test_list(
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
-    Slow = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb", # Parent of the commit that fixed the regression.
+    Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
     # Regression = "",
-    Fast = "f505965752df1377c96636685d5e7690f8fa4cf7")
+    Fixed = "19a73c795630a5f8c1eccc735bf38f6e47e09e6a")
 )
 # nolint end: undesirable_operator_linter.
