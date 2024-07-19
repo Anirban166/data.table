@@ -75,16 +75,14 @@ test.list <- atime::atime_test_list(
 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5493 (off-branch)
   # Merged to master in: https://github.com/Rdatatable/data.table/commit/2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7
-  "transform regression fixed in #5493" = atime::atime_test(
+  "transform improved in #5493" = atime::atime_test(
     N = 10^seq(1, 20),
     setup = {
-      set.seed(108)
       df <- data.frame(x = runif(N))
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
-    Before = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
-    Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
-    Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
+    Slow = "0895fa247afcf6b38044bd5f56c0d209691ddb31",,
+    Fast = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
 )
 # nolint end: undesirable_operator_linter.
