@@ -78,12 +78,11 @@ test.list <- atime::atime_test_list(
   "transform regression fixed in #5493" = atime::atime_test(
     N = 10^seq(1, 20),
     setup = {
-      set.seed(108)
       df <- data.frame(x = runif(N))
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
-    # Before = "", 
+    Before = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
     Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
     Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
 )
