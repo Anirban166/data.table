@@ -83,9 +83,8 @@ test.list <- atime::atime_test_list(
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
-    Before = "0895fa247afcf6b38044bd5f56c0d209691ddb31", 
+    # Before = "", 
     Regression = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
-    # Regression = "",
     Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
 )
 # nolint end: undesirable_operator_linter.
