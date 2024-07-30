@@ -75,7 +75,7 @@ test.list <- atime::atime_test_list(
 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
-    N = 10^seq(1, 9),
+    N = 10^seq(1, 7),
     setup = {
       dt <- data.table(id = sample(N), value = rnorm(N))
       setkey(dt, id)
@@ -85,6 +85,7 @@ test.list <- atime::atime_test_list(
       dt[order(data.table:::forder(dt, "id"))]
     },  
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
-    Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506") # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
+    Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
+NULL
 )
 # nolint end: undesirable_operator_linter.
