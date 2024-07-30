@@ -73,88 +73,19 @@ test.list <- atime::atime_test_list(
       paste0('useDynLib(', new.Package_))
   },
 
-  # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
-  "shallow regression fixed in #4440" = atime::atime_test(
-    N = 10^seq(3,8),
+  # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
+  "forder improved in #4386" = atime::atime_test(
+    N = 10^seq(1, 9),
     setup = {
-      set.seed(1L)
-      dt <- data.table(a = sample.int(N))
-      setindexv(dt, "a")
-    },
-    expr = data.table:::shallow(dt),
-    # Before = "", This needs to be updated later as there are two issues here: A) The source of regression (or the particular commit that led to it) is not clear; B) Older versions of data.table are having problems when being installed in this manner (This includes commits from before March 20 2020, when the issue that discovered or first mentioned the regression was created)
-    Regression = "b1b1832b0d2d4032b46477d9fe6efb15006664f4", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/0f0e7127b880df8459b0ed064dc841acd22f5b73) in the PR (https://github.com/Rdatatable/data.table/pull/4440/commits) that fixes the regression
-    Fixed = "9d3b9202fddb980345025a4f6ac451ed26a423be"), # Merge commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/4440)
-
-  # Test based on: https://github.com/Rdatatable/data.table/issues/5424
-  # Performance regression introduced from a commit in: https://github.com/Rdatatable/data.table/pull/4491
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/5463
-  "memrecycle regression fixed in #5463" = atime::atime_test(
-    N = 10^seq(3, 8),
-    setup = {
-      n <- N/100
-      set.seed(2L)
-      dt <- data.table(
-        g = sample(seq_len(n), N, TRUE),
-        x = runif(N),
-        key = "g")
-      dt_mod <- copy(dt)
-    },
-    expr = data.table:::`[.data.table`(dt_mod, , N := .N, by = g),
-    Before = "be2f72e6f5c90622fe72e1c315ca05769a9dc854", # Parent of the regression causing commit (https://github.com/Rdatatable/data.table/commit/e793f53466d99f86e70fc2611b708ae8c601a451) in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
-    Regression = "e793f53466d99f86e70fc2611b708ae8c601a451", # Commit responsible for regression in the PR that introduced the issue (https://github.com/Rdatatable/data.table/pull/4491/commits)
-    Fixed = "58409197426ced4714af842650b0cc3b9e2cb842"), # Last commit in the PR that fixed the regression (https://github.com/Rdatatable/data.table/pull/5463/commits)
-
-  # Issue reported in: https://github.com/Rdatatable/data.table/issues/5426
-  # To be fixed in: https://github.com/Rdatatable/data.table/pull/5427
-  "setDT improved in #5427" = atime::atime_test(
-    N = 10^seq(1, 7),
-    setup = {
-      L <- replicate(N, 1, simplify = FALSE)
-      setDT(L)
+      dt <- data.table(id = sample(N), value = rnorm(N))
+      setkey(DT, id)
     },
     expr = {
-      data.table:::setattr(L, "class", NULL)
-      data.table:::setDT(L)
-    },
-    Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
-    Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15"), # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)
-
-  # Issue reported in: https://github.com/Rdatatable/data.table/issues/4200
-  # To be fixed in: https://github.com/Rdatatable/data.table/pull/4558
-  "DT[by] fixed in #4558" = atime::atime_test(
-    N = 10^seq(1, 20),
-    setup = {
-      d <- data.table(
-        id3 = sample(c(seq.int(N*0.9), sample( N*0.9, N*0.1, TRUE))),
-        v1 = sample(5L, N, TRUE),
-        v2 = sample(5L, N, TRUE)
-      )
-    },
-    expr = {
-      expr=data.table:::`[.data.table`(d, , max(v1) - min(v2), by = id3)
-    },
-    Before = "7a9eaf62ede487625200981018d8692be8c6f134", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/515de90a6068911a148e54343a3503043b8bb87c) in the PR (https://github.com/Rdatatable/data.table/pull/4164/commits) that introduced the regression
-    Regression = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/15f0598b9828d3af2eb8ddc9b38e0356f42afe4f) in the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
-    Fixed = "f750448a2efcd258b3aba57136ee6a95ce56b302"), # Second commit of the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
-
-  # Issue with sorting again when already sorted: https://github.com/Rdatatable/data.table/issues/4498
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/4501
-  "DT[,.SD] improved in #4501" = atime::atime_test(
-    N = 10^seq(1, 10, by=0.5),
-    setup = {
-      set.seed(1)
-      L = as.data.table(as.character(rnorm(N, 1, 0.5)))
-      setkey(L, V1)
-    },
-    ## New DT can safely retain key.
-    expr = {
-      data.table:::`[.data.table`(L, , .SD)
-    },
-    Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461", # Close-to-last merge commit in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slow = "3ca83738d70d5597d9e168077f3768e32569c790", # Circa 2024 master parent of close-to-last merge commit (https://github.com/Rdatatable/data.table/commit/353dc7a6b66563b61e44b2fa0d7b73a0f97ca461) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slower = "cacdc92df71b777369a217b6c902c687cf35a70d"), # Circa 2020 parent of the first commit (https://github.com/Rdatatable/data.table/commit/74636333d7da965a11dad04c322c752a409db098) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
+      DT[order(data.table:::forder(DT, "id"))]
+      DT[order(data.table:::forder(DT, "id"))]
+    },  
+    Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
+    Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506") # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
 
   NULL)
 # nolint end: undesirable_operator_linter.
