@@ -75,12 +75,13 @@ test.list <- atime::atime_test_list(
 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
-    N = 10^seq(1, 7),
+    N = 10^seq(1, 8),
     setup = {
       dt <- data.table(id = sample(N), value = rnorm(N))
-      setkey(dt, id)
     },
     expr = {
+      data.table:::setkey(dt, id)
+      dt[order(data.table:::forder(dt, "id"))]
       dt[order(data.table:::forder(dt, "id"))]
       dt[order(data.table:::forder(dt, "id"))]
     },  
