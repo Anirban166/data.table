@@ -75,7 +75,7 @@ test.list <- atime::atime_test_list(
 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
-    N = 10^seq(1, 8),
+    N = 10^seq(1, 9),
     setup = {
       dt <- data.table(id = sample(N), value = rnorm(N))
     },
