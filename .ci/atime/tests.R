@@ -96,6 +96,7 @@ test.list <- atime::atime_test_list(
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
     },
     expr = {
+      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
       data.table:::key(DT)
       data.table:::uniqueN(DT)
       data.table:::uniqueN(DT)
