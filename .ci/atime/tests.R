@@ -155,6 +155,21 @@ test.list <- atime::atime_test_list(
     Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461", # Close-to-last merge commit in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
     Slow = "3ca83738d70d5597d9e168077f3768e32569c790", # Circa 2024 master parent of close-to-last merge commit (https://github.com/Rdatatable/data.table/commit/353dc7a6b66563b61e44b2fa0d7b73a0f97ca461) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
     Slower = "cacdc92df71b777369a217b6c902c687cf35a70d"), # Circa 2020 parent of the first commit (https://github.com/Rdatatable/data.table/commit/74636333d7da965a11dad04c322c752a409db098) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-# TBU.
+
+  # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
+  "forder improved in #4386" = atime::atime_test(
+    N = 10^seq(1, 8), # 1e9 probably exceeds runner's memory (gets killed)
+    setup = {
+      dt <- data.table(id = sample(N), value = rnorm(N))
+    },
+    expr = {
+      data.table:::setkey(dt, id)
+      dt[order(data.table:::forder(dt, "id"))]
+      dt[order(data.table:::forder(dt, "id"))]
+      # dt[order(data.table:::forder(dt, "id"))]
+    },
+    #Before = "aa75d79376478b3e8f80fd6f31dcf53be8bf3404", # 1.15.4
+    Regression = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
+    Fixed = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression  
   NULL)
 # nolint end: undesirable_operator_linter.
