@@ -82,7 +82,7 @@ test.list <- atime::atime_test_list(
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
-    Slow = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
-    Fast = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
+    Regression = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
+    Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7")
 )
 # nolint end: undesirable_operator_linter.
