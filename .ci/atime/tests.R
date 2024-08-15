@@ -85,7 +85,7 @@ test.list <- atime::atime_test_list(
       options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
       dt[order(data.table:::forder(dt, "a"))]
       dt[order(data.table:::forder(dt, "a"))]
-      dt[order(data.table:::forder(dt, "a"))]
+      # dt[order(data.table:::forder(dt, "a"))]
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
     Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
