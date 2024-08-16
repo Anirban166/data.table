@@ -88,8 +88,7 @@ test.list <- atime::atime_test_list(
       g = runif(N),
       h = sample(letters, N, TRUE)
     )
-    setindex(dt, a, b, c, d)  # Use setindex for indexing
-      # setkey(dt, a)
+    # setkey(dt, a)
     },
     expr = {
     data.table:::setindex(dt, a, b, c, d)  
