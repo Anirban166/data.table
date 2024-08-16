@@ -79,16 +79,39 @@ test.list <- atime::atime_test_list(
     setup = {
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
       dt <- data.table(
-       a = sample(letters, N, TRUE),
-       b = sample(1:1000, N, TRUE),
-       c = rnorm(N),
-       d = runif(N)
-      )
+      a = sample(letters, N, TRUE),
+      b = sample(1:1000, N, TRUE),
+      c = rnorm(N),
+      d = runif(N),
+      e = sample(letters, N, TRUE),
+      f = rnorm(N),
+      g = runif(N),
+      h = sample(letters, N, TRUE)
+    )
+    setindex(dt, a, b, c, d)  # Use setindex for indexing
       # setkey(dt, a)
     },
     expr = {
-      data.table:::setkey(dt, a)
-      options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
+    data.table:::setindex(dt, a, b, c, d)  
+    # data.table:::setkey(dt, a)
+    options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
+
+    dt[order(data.table:::forder(dt, c("a", "b", "c", "d")))]
+    
+    dt[order(data.table:::forder(dt, c("a", "b", "c", "d")))]
+    dt[order(data.table:::forder(dt, c("e", "f")))]
+    dt[order(data.table:::forder(dt, c("g", "h")))]
+    dt[order(data.table:::forder(dt, c("a", "c", "e", "g")))]
+    dt[order(data.table:::forder(dt, c("b", "d", "f", "h")))]
+    
+    dt[, .(mean_c = mean(c), sum_d = sum(d)), by = .(a, b)]
+    dt[, .(max_f = max(f), min_g = min(g)), by = .(e, f)]
+    dt[order(data.table:::forder(dt, c("a", "b", "c", "d")))]
+    dt[, .(mean_c = mean(c), sum_d = sum(d)), by = .(a, b)]
+    dt[order(data.table:::forder(dt, c("e", "f", "g", "h")))]
+    dt[, .(max_f = max(f), min_g = min(g)), by = .(e, f)]
+    
+    dt[order(data.table:::forder(dt, c("a", "b", "c", "d", "e", "f", "g", "h")))]     
       dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forder(dt, "b"))]
