@@ -77,15 +77,28 @@ test.list <- atime::atime_test_list(
   "forder improved in #4386" = atime::atime_test(
     N = 10^seq(1, 8), # 1e9 probably exceeds the runner's memory (process gets killed)
     setup = {
-      dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
+      # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
+      dt <- data.table(
+       a = sample(letters, N, TRUE),
+       b = sample(1:1000, N, TRUE),
+       c = rnorm(N),
+       d = runif(N)
+      )
       # setkey(dt, a)
     },
     expr = {
       data.table:::setkey(dt, a)
       options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
-      dt[order(data.table:::forder(dt, "a"))]
-      dt[order(data.table:::forder(dt, "a"))]
-      # dt[order(data.table:::forder(dt, "a"))]
+      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, "b"))]
+      dt[order(data.table:::forder(dt, "c"))]
+      dt[order(data.table:::forder(dt, c("a", "c")))]
+      dt[order(data.table:::forder(dt, c("b", "c")))]
+      dt[order(data.table:::forder(dt, c("a", "d")))]
+      dt[order(data.table:::forder(dt, c("b", "d")))]
+      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, c("b", "c")))]
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
     Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
