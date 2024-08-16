@@ -91,7 +91,7 @@ test.list <- atime::atime_test_list(
     # setkey(dt, a)
     },
     expr = {
-    data.table:::setindex(dt, a, b, c, d)  
+    data.table:::setkey(dt, a, b, c, d)  
     # data.table:::setkey(dt, a)
     options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
 
