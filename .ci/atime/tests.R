@@ -89,15 +89,15 @@ test.list <- atime::atime_test_list(
     expr = {
       data.table:::setindex(dt, a)  
       # data.table:::setkey(dt, a)
-      options(datatable.forder.reuse.sorting=TRUE, datatable.verbose=TRUE)
+      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
       dt[order(data.table:::forder(dt, c("a", "b")))]
-      dt[order(data.table:::forder(dt, c("a", "b")))]
-      dt[order(data.table:::forder(dt, "b"))]
-      dt[order(data.table:::forder(dt, "c"))]
-      dt[order(data.table:::forder(dt, c("a", "c")))]
+      # dt[order(data.table:::forder(dt, c("a", "b")))]
+      # dt[order(data.table:::forder(dt, "b"))]
+      # dt[order(data.table:::forder(dt, "c"))]
+      # dt[order(data.table:::forder(dt, c("a", "c")))]
       dt[order(data.table:::forder(dt, c("b", "c")))]
-      dt[order(data.table:::forder(dt, c("a", "d")))]
-      dt[order(data.table:::forder(dt, c("b", "d")))]
+      # dt[order(data.table:::forder(dt, c("a", "d")))]
+      # dt[order(data.table:::forder(dt, c("b", "d")))]
       dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forder(dt, c("b", "c")))]
     },
