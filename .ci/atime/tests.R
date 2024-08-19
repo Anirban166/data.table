@@ -94,7 +94,6 @@ test.list <- atime::atime_test_list(
       # dt[order(data.table:::forder(dt, c("b", "c")))]
       # dt[order(data.table:::forder(dt, c("a", "d")))]
       # dt[order(data.table:::forder(dt, c("b", "d")))]
-      dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forder(dt, a))]
       # dt[order(data.table:::forder(dt, c("b", "c")))]
     },
