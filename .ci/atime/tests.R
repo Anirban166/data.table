@@ -79,17 +79,14 @@ test.list <- atime::atime_test_list(
     seconds.limit = 1,
     setup = {
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
-      dt <- data.table(
-       a = sample(letters, N, TRUE),
-       b = sample(1:1000, N, TRUE)
-      )
+      dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:1000, N, TRUE))
     # setkey(dt, a)
     },
     expr = {
       data.table:::setindex(dt, a)  
       # data.table:::setkey(dt, a)
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
-      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, c("a")))]
       # dt[order(data.table:::forder(dt, c("a", "b")))]
       # dt[order(data.table:::forder(dt, "b"))]
       # dt[order(data.table:::forder(dt, "c"))]
@@ -97,7 +94,7 @@ test.list <- atime::atime_test_list(
       # dt[order(data.table:::forder(dt, c("b", "c")))]
       # dt[order(data.table:::forder(dt, c("a", "d")))]
       # dt[order(data.table:::forder(dt, c("b", "d")))]
-      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, c("a")))]
       # dt[order(data.table:::forder(dt, c("b", "c")))]
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
