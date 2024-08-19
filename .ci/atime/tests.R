@@ -81,9 +81,7 @@ test.list <- atime::atime_test_list(
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
       dt <- data.table(
        a = sample(letters, N, TRUE),
-       b = sample(1:1000, N, TRUE),
-       c = rnorm(N),
-       d = runif(N)
+       b = sample(1:1000, N, TRUE)
       )
     # setkey(dt, a)
     },
