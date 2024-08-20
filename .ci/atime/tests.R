@@ -78,8 +78,8 @@ test.list <- atime::atime_test_list(
     N = 10^seq(1, 8), # 1e9 probably exceeds the runner's memory (process gets killed)
     seconds.limit = 0.4,
     setup = {
-      # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
-      dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:100, N, TRUE))
+      # dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:100, N, TRUE))
+      dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
     # setkey(dt, a)
     },
     expr = {
