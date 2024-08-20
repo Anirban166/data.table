@@ -83,7 +83,7 @@ test.list <- atime::atime_test_list(
     expr = {
       data.table:::setindex(dt, a)  
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
-      dt[order(data.table:::forder(dt, c("a", "b")))]
+      dt[order(data.table:::forder(dt, "a"))]
       dt[order(data.table:::forder(dt, "a"))]
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
