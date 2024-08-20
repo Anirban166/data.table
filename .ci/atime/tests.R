@@ -76,7 +76,7 @@ test.list <- atime::atime_test_list(
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
     N = 10^seq(1, 8), # 1e9 probably exceeds the runner's memory (process gets killed)
-    seconds.limit = 1,
+    # seconds.limit = 1,
     setup = {
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
       dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:1000, N, TRUE))
