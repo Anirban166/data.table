@@ -79,7 +79,7 @@ test.list <- atime::atime_test_list(
     # seconds.limit = 1,
     setup = {
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
-      dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:1000, N, TRUE))
+      dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:100, N, TRUE))
     # setkey(dt, a)
     },
     expr = {
