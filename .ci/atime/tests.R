@@ -75,17 +75,15 @@ test.list <- atime::atime_test_list(
 
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
-    N = 10^seq(1, 8), # 1e9 probably exceeds the runner's memory (process gets killed)
+    N = 10^seq(1, 8), # 1e9 exceeds the runner's memory (process gets killed)
     seconds.limit = 0.08,
     setup = {
-      # dt <- data.table(a = sample(letters, N, TRUE), b = sample(1:1000, N, TRUE))
-      dt <- data.table(a = sample(letters, N, TRUE))
+      dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
     },
     expr = {
       data.table:::setindex(dt, a)  
-      # data.table:::setkey(dt, a)
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
-      dt[order(data.table:::forder(dt, c("a")))]
+      dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forder(dt, c("a")))]
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
