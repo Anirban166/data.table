@@ -78,7 +78,7 @@ test.list <- atime::atime_test_list(
   # Performance regression discussed in: https://github.com/Rdatatable/data.table/issues/4311
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4440
   "shallow regression fixed in #4440" = atime::atime_test(
-    N = 10^seq(3,8),
+    N = 10^seq(3, 8),
     setup = {
       set.seed(1L)
       dt <- data.table(a = sample.int(N))
@@ -129,14 +129,12 @@ test.list <- atime::atime_test_list(
     N = 10^seq(1, 20),
     setup = {
       d <- data.table(
-        id3 = sample(c(seq.int(N*0.9), sample( N*0.9, N*0.1, TRUE))),
+        id = sample(c(seq.int(N * 0.9), sample(N * 0.9, N * 0.1, TRUE))),
         v1 = sample(5L, N, TRUE),
         v2 = sample(5L, N, TRUE)
       )
     },
-    expr = {
-      expr=data.table:::`[.data.table`(d, , max(v1) - min(v2), by = id3)
-    },
+    expr = data.table:::`[.data.table`(d, , max(v1) - min(v2), by = id),
     Before = "7a9eaf62ede487625200981018d8692be8c6f134", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/515de90a6068911a148e54343a3503043b8bb87c) in the PR (https://github.com/Rdatatable/data.table/pull/4164/commits) that introduced the regression
     Regression = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/15f0598b9828d3af2eb8ddc9b38e0356f42afe4f) in the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
     Fixed = "f750448a2efcd258b3aba57136ee6a95ce56b302"), # Second commit of the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
@@ -151,9 +149,7 @@ test.list <- atime::atime_test_list(
       setkey(L, V1)
     },
     ## New DT can safely retain key.
-    expr = {
-      data.table:::`[.data.table`(L, , .SD)
-    },
+    expr = data.table:::`[.data.table`(L, , .SD),
     Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461", # Close-to-last merge commit in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
     Slow = "3ca83738d70d5597d9e168077f3768e32569c790", # Circa 2024 master parent of close-to-last merge commit (https://github.com/Rdatatable/data.table/commit/353dc7a6b66563b61e44b2fa0d7b73a0f97ca461) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
     Slower = "cacdc92df71b777369a217b6c902c687cf35a70d"), # Circa 2020 parent of the first commit (https://github.com/Rdatatable/data.table/commit/74636333d7da965a11dad04c322c752a409db098) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
