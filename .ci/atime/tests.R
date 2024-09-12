@@ -79,9 +79,14 @@ test.list <- atime::atime_test_list(
   "melt improved in #5054" = atime::atime_test(
     N = 10^seq(1, 9),
     setup = {
-      dt = data.table(x = sample(c(1:N, NA), N, replace = TRUE), y = sample(c(letters, NA), N, replace = TRUE))
+      dt = data.table(x = sample(c(1:N, NA), N, replace = TRUE),
+                      y = sample(c(letters, NA), N, replace = TRUE),
+                      z = sample(c(NA, 1:N), N, replace = TRUE),
+                      w = replicate(N, paste0(sample(letters, 20, replace = TRUE), collapse = "")),
+                      v = I(lapply(1:N, function(i) list(sample(1:100, 10, replace = TRUE))))
+                      )
     },
-    expr = data.table:::melt(dt, id.vars = "x", na.rm = TRUE),
+    expr = data.table:::melt(dt, id.vars = c("x", "z"), na.rm = TRUE),
     Slow = "fd24a3105953f7785ea7414678ed8e04524e6955", # Parent of the merge commit (https://github.com/Rdatatable/data.table/commit/ed72e398df76a0fcfd134a4ad92356690e4210ea) of the PR (https://github.com/Rdatatable/data.table/pull/5054) that brought the improvement
     Fast = "ed72e398df76a0fcfd134a4ad92356690e4210ea"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/5054) that brought the improvement
   
