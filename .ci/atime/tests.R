@@ -83,7 +83,7 @@ test.list <- atime::atime_test_list(
       df <- data.frame(x = runif(N), y = rnorm(N), z = sample(letters, N, replace = TRUE))
       dt <- as.data.table(df)
     },
-    expr = data.table:::`[.data.table`(transform(dt, xRounded = round(x), ySquared = y^2, zLength = nchar(z))),
+    expr = data.table:::transform(dt, xRounded = round(x), ySquared = y^2, zLength = nchar(z)),
     Slow = "64e2041ad48838679ac4c901a04557f5a7ba2df3",
     Fast = "cde7333938a590a3cddbda1b02103650e2f55d15"),
 
