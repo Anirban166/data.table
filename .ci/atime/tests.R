@@ -86,7 +86,10 @@ test.list <- atime::atime_test_list(
     expr = data.table:::`[.data.table`(dt[, `:=`(xRounded = round(x), ySquared = y^2, zLength = nchar(z))]),
     # data.table:::`[.data.table`(transform(dt, xRounded = round(x), ySquared = y^2, zLength = nchar(z), conditional = ifelse(y > 0, x * y, x / y))),
     Slow = "64e2041ad48838679ac4c901a04557f5a7ba2df3",
-    Fast = "cde7333938a590a3cddbda1b02103650e2f55d15"),
+    Fast = "cde7333938a590a3cddbda1b02103650e2f55d15",
+    Next = "18a7209b242fa2a784fe76be845106baacd8349f",
+    Next2 = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7",
+    Next3 = "6db0eda711bb59ad9b6009208584c56da1abb915"),
 
   NULL)
 # nolint end: undesirable_operator_linter.
