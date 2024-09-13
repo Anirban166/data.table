@@ -77,7 +77,7 @@ test.list <- atime::atime_test_list(
 
   # Improvement brought by: https://github.com/Rdatatable/data.table/pull/5054
   "melt improved in #5054" = atime::atime_test(
-    N = 10^seq(1, 9),
+    N = 10^seq(1, 10),
     setup = {
       dt = data.table(x = sample(c(1:N, NA), N, replace = TRUE),
                       y = sample(c(letters, NA), N, replace = TRUE),
