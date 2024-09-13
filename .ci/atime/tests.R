@@ -78,10 +78,10 @@ test.list <- atime::atime_test_list(
   "transform improved in #5493" = atime::atime_test(
     N = 10^seq(1, 20),
     setup = {
-      df <- data.frame(x = runif(N))
+      df <- data.frame(x = runif(N), y = rnorm(N), z = sample(letters, N, replace = TRUE))
       dt <- as.data.table(df)
     },
-    expr = data.table:::`[.data.table`(transform(dt, y = round(x))),
+    expr = data.table:::`[.data.table`(transform(dt, xRounded = round(x), ySquared = y^2, zLength = nchar(z))),
     Before = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
     Regression = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
     Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7"),
