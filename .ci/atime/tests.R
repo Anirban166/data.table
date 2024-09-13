@@ -84,13 +84,8 @@ test.list <- atime::atime_test_list(
       dt <- as.data.table(df)
     },
     expr = data.table:::`[.data.table`(transform(dt, xRounded = round(x), ySquared = y^2, zLength = nchar(z))),
-    Before = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
-    Regression = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
-    Fixed = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7"),
-
-    },
-    Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801) in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
-    Fast = "af48a805e7a5026a0c2d0a7fd9b587fea5cfa3c4"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
+    Slow = "64e2041ad48838679ac4c901a04557f5a7ba2df3",
+    Fast = "cde7333938a590a3cddbda1b02103650e2f55d15"),
 
   NULL)
 # nolint end: undesirable_operator_linter.
