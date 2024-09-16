@@ -166,5 +166,16 @@ test.list <- atime::atime_test_list(
     Slow = "a01f00f7438daf4612280d6886e6929fa8c8f76e", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/fc0c1e76408c34a8482f16f7421d262c7f1bde32) in the PR (https://github.com/Rdatatable/data.table/pull/6296/commits) that fixes the issue
     Fast = "f248bbe6d1204dfc8def62328788eaadcc8e17a1"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/6296) that fixes the issue
 
+  # Issue reported in: https://github.com/Rdatatable/data.table/issues/1534
+  # Fixed in: https://github.com/Rdatatable/data.table/pull/5205
+  "DT shift improved in #5205" = atime::atime_test(
+    N = 10^seq(1, 10),
+    setup = {
+      DT = data.table(x = sample(N), y = sample(1e2, N, TRUE))
+    },
+    expr = data.table:::`[.data.table`(DT, , shift(x, 1, type = "lag"), y),
+    Slow = "7f0ce147eef1dd5cd5ff05dffc3c72f472bcde51", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/58135017a985f3cc2c6f0d091c4effaec4442f56) in the PR (https://github.com/Rdatatable/data.table/pull/5205/commits) that fixes the issue
+    Fast = "5eec8f2d00521edb0a4a088ad154d065daa869c6"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5205/commits) that fixes the issue
+  
   NULL)
 # nolint end: undesirable_operator_linter.
