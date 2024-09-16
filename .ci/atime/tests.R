@@ -78,7 +78,7 @@ test.list <- atime::atime_test_list(
   # Issue reported in: https://github.com/Rdatatable/data.table/issues/1534
   # Fixed in: https://github.com/Rdatatable/data.table/pull/5205
   "DT shift improved in #5205" = atime::atime_test(
-    N = 10^seq(1, 10),
+    N = 10^seq(1, 20),
     setup = {
       DT = data.table(x = sample(N), y = sample(1e2, N, TRUE))
     },
