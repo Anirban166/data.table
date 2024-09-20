@@ -79,13 +79,12 @@ test.list <- atime::atime_test_list(
   # Merged to master in: https://github.com/Rdatatable/data.table/commit/2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7
   "transform improved in #5493" = atime::atime_test(
     N = 10^seq(1, 20),
-    seconds.limit = 0.1,
     setup = {
       df <- data.frame(x = runif(N))
       dt <- as.data.table(df)
     },
     expr = data.table:::transform.data.table(dt, y = round(x)),
-    Slow = "bf499090c0e6fd5cb492bf8b1603d93c1ee21dfb",
+    Slow = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
     Fast = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7"),
 
   NULL)
