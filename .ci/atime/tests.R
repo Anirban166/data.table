@@ -75,16 +75,6 @@ test.list <- atime::atime_test_list(
       paste0('useDynLib(', new.Package_))
   },
 
-  setup={
-    DT <- as.data.table(as.list(1:N))
-    measure.vars <- lapply(1:N,function(i){
-      x=rep(NA,N)
-      x[i]=i
-      x
-    })
-  },
-  expr=data.table:::melt(DT, measure.vars=measure.vars)
-  
   # Improvement brought by: https://github.com/Rdatatable/data.table/pull/5054
   "melt improved in #5054" = atime::atime_test(
     N = 10^seq(1, 10),
