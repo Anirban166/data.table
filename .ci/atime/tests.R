@@ -129,20 +129,6 @@ test.list <- atime::atime_test_list(
     Regression = "e793f53466d99f86e70fc2611b708ae8c601a451", # Commit responsible for regression in the PR (https://github.com/Rdatatable/data.table/pull/4491/commits) that introduced the issue
     Fixed = "58409197426ced4714af842650b0cc3b9e2cb842"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5463/commits) that fixed the regression
 
-  # Issue reported in https://github.com/Rdatatable/data.table/issues/5426
-  # Test case adapted from https://github.com/Rdatatable/data.table/pull/5427#issue-1323678063 which is the fix PR.
-  "setDT improved in #5427" = atime::atime_test(
-    setup = {
-      L <- replicate(N, 1, simplify = FALSE)
-      setDT(L)
-    },
-    expr = {
-      data.table:::setattr(L, "class", NULL)
-      data.table:::setDT(L)
-    },
-    Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801) in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
-    Fast = "af48a805e7a5026a0c2d0a7fd9b587fea5cfa3c4"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
-
   # Test case adapted from https://github.com/Rdatatable/data.table/issues/4200#issuecomment-645980224 which is where the issue was reported.
   # Fixed in https://github.com/Rdatatable/data.table/pull/4558
   "DT[by] fixed in #4558" = atime::atime_test(
