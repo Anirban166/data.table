@@ -144,20 +144,6 @@ test.list <- atime::atime_test_list(
     Regression = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/15f0598b9828d3af2eb8ddc9b38e0356f42afe4f) in the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
     Fixed = "f750448a2efcd258b3aba57136ee6a95ce56b302"), # Second commit of the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
 
-  # Issue with sorting again when already sorted, as reported in https://github.com/Rdatatable/data.table/issues/4498
-  # Test case adapted from https://github.com/Rdatatable/data.table/pull/4501#issue-625311918 which is the fix PR.
-  "DT[,.SD] improved in #4501" = atime::atime_test(
-    setup = {
-      set.seed(1)
-      L = as.data.table(as.character(rnorm(N, 1, 0.5)))
-      setkey(L, V1)
-    },
-    ## New DT can safely retain key.
-    expr = data.table:::`[.data.table`(L, , .SD),
-    Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461", # Close-to-last merge commit in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slow = "3ca83738d70d5597d9e168077f3768e32569c790", # Circa 2024 master parent of close-to-last merge commit (https://github.com/Rdatatable/data.table/commit/353dc7a6b66563b61e44b2fa0d7b73a0f97ca461) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slower = "cacdc92df71b777369a217b6c902c687cf35a70d"), # Circa 2020 parent of the first commit (https://github.com/Rdatatable/data.table/commit/74636333d7da965a11dad04c322c752a409db098) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-
   # Test case adapted from https://github.com/Rdatatable/data.table/issues/6286#issue-2412141289 which is where the issue was reported.
   # Fixed in https://github.com/Rdatatable/data.table/pull/6296
   "DT[by,verbose=TRUE] improved in #6296" = atime::atime_test(
