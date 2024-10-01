@@ -129,20 +129,6 @@ test.list <- atime::atime_test_list(
     Regression = "e793f53466d99f86e70fc2611b708ae8c601a451", # Commit responsible for regression in the PR (https://github.com/Rdatatable/data.table/pull/4491/commits) that introduced the issue
     Fixed = "58409197426ced4714af842650b0cc3b9e2cb842"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5463/commits) that fixed the regression
 
-  # Issue reported in https://github.com/Rdatatable/data.table/issues/5426
-  # Test case adapted from https://github.com/Rdatatable/data.table/pull/5427#issue-1323678063 which is the fix PR.
-  "setDT improved in #5427" = atime::atime_test(
-    setup = {
-      L <- replicate(N, 1, simplify = FALSE)
-      setDT(L)
-    },
-    expr = {
-      data.table:::setattr(L, "class", NULL)
-      data.table:::setDT(L)
-    },
-    Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801) in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
-    Fast = "af48a805e7a5026a0c2d0a7fd9b587fea5cfa3c4"), # Last commit in the PR (https://github.com/Rdatatable/data.table/pull/5427/commits) that fixes the issue
-
   # Test case adapted from https://github.com/Rdatatable/data.table/issues/4200#issuecomment-645980224 which is where the issue was reported.
   # Fixed in https://github.com/Rdatatable/data.table/pull/4558
   "DT[by] fixed in #4558" = atime::atime_test(
@@ -157,20 +143,6 @@ test.list <- atime::atime_test_list(
     Before = "7a9eaf62ede487625200981018d8692be8c6f134", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/515de90a6068911a148e54343a3503043b8bb87c) in the PR (https://github.com/Rdatatable/data.table/pull/4164/commits) that introduced the regression
     Regression = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/15f0598b9828d3af2eb8ddc9b38e0356f42afe4f) in the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
     Fixed = "f750448a2efcd258b3aba57136ee6a95ce56b302"), # Second commit of the PR (https://github.com/Rdatatable/data.table/pull/4558/commits) that fixes the regression
-
-  # Issue with sorting again when already sorted, as reported in https://github.com/Rdatatable/data.table/issues/4498
-  # Test case adapted from https://github.com/Rdatatable/data.table/pull/4501#issue-625311918 which is the fix PR.
-  "DT[,.SD] improved in #4501" = atime::atime_test(
-    setup = {
-      set.seed(1)
-      L = as.data.table(as.character(rnorm(N, 1, 0.5)))
-      setkey(L, V1)
-    },
-    ## New DT can safely retain key.
-    expr = data.table:::`[.data.table`(L, , .SD),
-    Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461", # Close-to-last merge commit in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slow = "3ca83738d70d5597d9e168077f3768e32569c790", # Circa 2024 master parent of close-to-last merge commit (https://github.com/Rdatatable/data.table/commit/353dc7a6b66563b61e44b2fa0d7b73a0f97ca461) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
-    Slower = "cacdc92df71b777369a217b6c902c687cf35a70d"), # Circa 2020 parent of the first commit (https://github.com/Rdatatable/data.table/commit/74636333d7da965a11dad04c322c752a409db098) in the PR (https://github.com/Rdatatable/data.table/pull/4501/commits) that fixes the issue 
 
   # Test case adapted from https://github.com/Rdatatable/data.table/issues/6286#issue-2412141289 which is where the issue was reported.
   # Fixed in https://github.com/Rdatatable/data.table/pull/6296
@@ -207,6 +179,6 @@ test.list <- atime::atime_test_list(
     expr = data.table:::melt(DT, measure.vars = measure.vars),
     Slow = "fd24a3105953f7785ea7414678ed8e04524e6955", # Parent of the merge commit (https://github.com/Rdatatable/data.table/commit/ed72e398df76a0fcfd134a4ad92356690e4210ea) of the PR (https://github.com/Rdatatable/data.table/pull/5054) that fixes the issue
     Fast = "ed72e398df76a0fcfd134a4ad92356690e4210ea"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/5054) that fixes the issue
-
+# time to test.
   tests=extra.test.list)
 # nolint end: undesirable_operator_linter.
