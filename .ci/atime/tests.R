@@ -82,7 +82,7 @@ test.list <- atime::atime_test_list(
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
     },
     expr = {
-      data.table:::setindex(dt, a)  
+      data.table:::setindex(dt, "a")  
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
       dt[order(data.table:::forder(dt, "a"))]
       # dt[order(data.table:::forder(dt, c("a", "b")))]
