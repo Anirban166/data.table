@@ -103,12 +103,12 @@ test.list <- atime::atime_test_list(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
     setup = {
       options(datatable.verbose = TRUE, datatable.forder.auto.index = TRUE, datatable.forder.reuse.sorting = TRUE)
-      dt <- data.table(indexCol = sample(N), valueCol = sample(N))
-      data.table:::forderv(dt, "indexCol") # First ordering call to initialize caching
+      dt <- data.table(index = sample(N), values = sample(N))
+      data.table:::forderv(dt, "index") # First ordering call to initialize caching
     },
     expr = {
-      data.table:::forderv(dt, "indexCol", retGrp = FALSE) # Reuse the cached index (no group information required)
-      data.table:::forderv(dt, "indexCol", retGrp = TRUE) # Reuse the index but compute group info.
+      data.table:::forderv(dt, "index", retGrp = FALSE) # Reuse the cached index (no group information required)
+      data.table:::forderv(dt, "index", retGrp = TRUE) # Reuse the index but compute group info.
     },
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
     Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
