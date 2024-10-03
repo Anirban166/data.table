@@ -103,16 +103,20 @@ test.list <- atime::atime_test_list(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
     seconds.limit = 0.1,
     setup = {
-      dt <- data.table(a = sample(letters, N, TRUE))
+      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
+      # dt <- data.table(a = sample(letters, N, TRUE))
+      dt <- data.table(v1 = sample(N), v2 = sample(N))
+      o <- data.table:::forderv(dt, "v1")
       # dt <- data.table(a = sample(letters, N, TRUE), b = rnorm(N))
     },
     expr = {
-      data.table:::setindexv(dt, "a")
+      data.table:::forderv(dt, "v1", retGrp = FALSE)
+      data.table:::forderv(dt, "v1", retGrp = FALSE)
+      # data.table:::setindexv(dt, "a")
       # setattr(dt, "index", NULL)
-      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
-      dt[order(data.table:::forderv(dt, "a"))]
+      # dt[order(data.table:::forderv(dt, "a"))]
       # dt[order(data.table:::forder(dt, c("a", "b")))]
-      dt[order(data.table:::forderv(dt, "a"))]
+      # dt[order(data.table:::forderv(dt, "a"))]
     },
     #Merge? = "ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93", # https://github.com/Rdatatable/data.table/pull/4386/commits/ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93
     ParentMerge = "e06624879d8ab33036587b35fef947ff460db6bd", # https://github.com/Rdatatable/data.table/commit/e06624879d8ab33036587b35fef947ff460db6bd
