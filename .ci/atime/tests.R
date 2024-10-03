@@ -111,7 +111,7 @@ test.list <- atime::atime_test_list(
     },
     expr = {
       data.table:::forderv(dt, "v1", retGrp = FALSE)
-      data.table:::forderv(dt, "v1", retGrp = FALSE)
+      data.table:::forderv(dt, "v1", retGrp = TRUE)
       # data.table:::setindexv(dt, "a")
       # setattr(dt, "index", NULL)
       # dt[order(data.table:::forderv(dt, "a"))]
@@ -119,6 +119,8 @@ test.list <- atime::atime_test_list(
       # dt[order(data.table:::forderv(dt, "a"))]
     },
     #Merge? = "ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93", # https://github.com/Rdatatable/data.table/pull/4386/commits/ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93
+    Pre = "b0efcf59442a7d086c6df17fa6a45c81b082322e",
+    Fix = "8bf5b5c4afa8e8fac8d55bcbd131463a80bb49fd",
     ParentMerge = "e06624879d8ab33036587b35fef947ff460db6bd", # https://github.com/Rdatatable/data.table/commit/e06624879d8ab33036587b35fef947ff460db6bd
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
     Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
