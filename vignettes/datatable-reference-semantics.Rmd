@@ -68,7 +68,7 @@ DF$c <- 18:13               # (1) -- replace entire column
 DF$c[DF$ID == "b"] <- 15:13 # (2) -- subassign in column 'c'
 ```
 
-both (1) and (2) resulted in deep copy of the entire data.frame in versions of `R` versions `< 3.1`. [It copied more than once](https://stackoverflow.com/q/23898969/559784). To improve performance by avoiding these redundant copies, *data.table* utilised the [available but unused `:=` operator in R](https://stackoverflow.com/q/7033106/559784).
+both (1) and (2) resulted in deep copy of the entire data.frame in versions of `R < 3.1`. [It copied more than once](https://stackoverflow.com/q/23898969/559784). To improve performance by avoiding these redundant copies, *data.table* utilised the [available but unused `:=` operator in R](https://stackoverflow.com/q/7033106/559784).
 
 Great performance improvements were made in `R v3.1` as a result of which only a *shallow* copy is made for (1) and not *deep* copy. However, for (2) still, the entire column is *deep* copied even in `R v3.1+`. This means the more columns one subassigns to in the *same query*, the more *deep* copies R does.
 
@@ -247,7 +247,7 @@ head(flights)
 
 * We use the `LHS := RHS` form. We store the input column names and the new columns to add in separate variables and provide them to `.SDcols` and for `LHS` (for better readability).
 
-* Note that since we allow assignment by reference without quoting column names when there is only one column as explained in [Section 2c](#delete-convenience), we can not do `out_cols := lapply(.SD, max)`. That would result in adding one new column named `out_col`. Instead we should do either `c(out_cols)` or simply `(out_cols)`. Wrapping the variable name with `(` is enough to differentiate between the two cases.
+* Note that since we allow assignment by reference without quoting column names when there is only one column as explained in [Section 2c](#delete-convenience), we can not do `out_cols := lapply(.SD, max)`. That would result in adding one new column named `out_cols`. Instead we should do either `c(out_cols)` or simply `(out_cols)`. Wrapping the variable name with `(` is enough to differentiate between the two cases.
 
 * The `LHS := RHS` form allows us to operate on multiple columns. In the RHS, to compute the `max` on columns specified in `.SDcols`, we make use of the base function `lapply()` along with `.SD` in the same way as we have seen before in the *"Introduction to data.table"* vignette. It returns a list of two elements, containing the maximum value corresponding to `dep_delay` and `arr_delay` for each group.
 
@@ -265,7 +265,7 @@ head(flights)
 ```{r}
 flights[, names(.SD) := lapply(.SD, as.factor), .SDcols = is.character]
 ```
-Let's clean up again and convert our newly-made factor columns back into character columns. This time we will make use of `.SDcols` accepting a function to decide which columns to include. In this case, `is.factor()` will return the columns which are factors. For more on the **S**ubset of the **D**ata, there is also an [SD Usage vignette](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-sd-usage.html).
+Let's clean up again and convert our newly-made factor columns back into character columns. This time we will make use of `.SDcols` accepting a function to decide which columns to include. In this case, `is.factor()` will return the columns which are factors. For more on the **S**ubset of the **D**ata, there is also an [SD Usage vignette](https://cran.r-project.org/package=data.table/vignettes/datatable-sd-usage.html).
 
 Sometimes, it is also nice to keep track of columns that we transform. That way, even after we convert our columns we would be able to call the specific columns we were updating.
 ```{r}
@@ -273,6 +273,7 @@ factor_cols <- sapply(flights, is.factor)
 flights[, names(.SD) := lapply(.SD, as.character), .SDcols = factor_cols]
 str(flights[, ..factor_cols])
 ```
+
 #### {.bs-callout .bs-callout-info}
 
 * We also could have used `(factor_cols)` on the `LHS` instead of `names(.SD)`.
