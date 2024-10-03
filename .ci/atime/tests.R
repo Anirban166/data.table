@@ -108,8 +108,8 @@ test.list <- atime::atime_test_list(
     },
     expr = {
       data.table:::setindexv(dt, "a")
-      setattr(dt, "index", NULL)
-      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
+      # setattr(dt, "index", NULL)
+      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
       dt[order(data.table:::forderv(dt, "a"))]
       # dt[order(data.table:::forder(dt, c("a", "b")))]
       dt[order(data.table:::forderv(dt, "a"))]
