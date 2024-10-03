@@ -103,7 +103,7 @@ test.list <- atime::atime_test_list(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
     seconds.limit = 0.1,
     setup = {
-      options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
+      options(datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
       # dt <- data.table(a = sample(letters, N, TRUE))
       dt <- data.table(v1 = sample(N), v2 = sample(N))
       o <- data.table:::forderv(dt, "v1")
