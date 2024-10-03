@@ -109,9 +109,9 @@ test.list <- atime::atime_test_list(
     expr = {
       data.table:::setindexv(dt, "a")  
       options(datatable.forder.reuse.sorting = TRUE, datatable.verbose = TRUE)
-      dt[order(data.table:::forder(dt, "a"))]
+      dt[order(data.table:::forderv(dt, "a"))]
       # dt[order(data.table:::forder(dt, c("a", "b")))]
-      dt[order(data.table:::forder(dt, "a"))]
+      dt[order(data.table:::forderv(dt, "a"))]
     },
     #Merge? = "ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93", # https://github.com/Rdatatable/data.table/pull/4386/commits/ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93
     ParentMerge = "e06624879d8ab33036587b35fef947ff460db6bd", # https://github.com/Rdatatable/data.table/commit/e06624879d8ab33036587b35fef947ff460db6bd
