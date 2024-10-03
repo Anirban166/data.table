@@ -98,17 +98,16 @@ test.list <- atime::atime_test_list(
       paste0('useDynLib(', new.Package_))
   },
 
-  # Fixed in: https://github.com/Rdatatable/data.table/pull/5493 (off-branch)
-  # Merged to master in: https://github.com/Rdatatable/data.table/commit/2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7
-  "transform improved in #5493" = atime::atime_test(
-    N = 10^seq(1, 20),
+  # Test case adapted from https://github.com/Rdatatable/data.table/issues/6286#issue-2412141289 which is where the issue was reported.
+  # Fixed in https://github.com/Rdatatable/data.table/pull/6296
+  "DT[by,verbose=TRUE] improved in #6296" = atime::atime_test(
     setup = {
-      df <- data.frame(x = runif(N))
-      dt <- as.data.table(df)
+      dt = data.table(a = 1:N)
+      dt_mod <- copy(dt)
     },
-    expr = data.table:::transform.data.table(dt, y = round(x)),
-    Slow = "0895fa247afcf6b38044bd5f56c0d209691ddb31",
-    Fast = "2d1a0575f87cc50e90f64825c30d7a6cb6b05dd7"),
+    expr = data.table:::`[.data.table`(dt_mod, , 1, by = a, verbose = TRUE),
+    Slow = "a01f00f7438daf4612280d6886e6929fa8c8f76e", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/fc0c1e76408c34a8482f16f7421d262c7f1bde32) in the PR (https://github.com/Rdatatable/data.table/pull/6296/commits) that fixes the issue
+    Fast = "f248bbe6d1204dfc8def62328788eaadcc8e17a1"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/6296) that fixes the issue
 
   tests=extra.test.list)
 # nolint end: undesirable_operator_linter.
