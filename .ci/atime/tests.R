@@ -83,7 +83,7 @@ test.list <- atime::atime_test_list(
   "forder improved in #4386" = atime::atime_test(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
     setup = {
-      options(datatable.forder.auto.index = TRUE, datatable.forder.reuse.sorting = TRUE)
+      options(datatable.forder.auto.index = FALSE)
       dt <- data.table(index = sample(N), values = sample(N))
       data.table:::forderv(dt, "index") # First ordering call to initialize caching
     },
