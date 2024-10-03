@@ -103,7 +103,7 @@ test.list <- atime::atime_test_list(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
     seconds.limit = 0.1,
     setup = {
-      options(datatable.verbose = TRUE, datatable.forder.auto.index = TRUE)
+      options(datatable.verbose = TRUE, datatable.forder.auto.index = TRUE, datatable.forder.reuse.sorting = TRUE)
       # dt <- data.table(a = sample(letters, N, TRUE))
       dt <- data.table(v1 = sample(N), v2 = sample(N))
       o <- data.table:::forderv(dt, "v1")
@@ -118,9 +118,8 @@ test.list <- atime::atime_test_list(
       # dt[order(data.table:::forder(dt, c("a", "b")))]
       # dt[order(data.table:::forderv(dt, "a"))]
     },
-    #Merge? = "ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93", # https://github.com/Rdatatable/data.table/pull/4386/commits/ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93
-    Pre = "b0efcf59442a7d086c6df17fa6a45c81b082322e",
-    ParentMerge = "e06624879d8ab33036587b35fef947ff460db6bd", # https://github.com/Rdatatable/data.table/commit/e06624879d8ab33036587b35fef947ff460db6bd
+    #Pre = "b0efcf59442a7d086c6df17fa6a45c81b082322e",
+    #ParentMerge = "e06624879d8ab33036587b35fef947ff460db6bd", # https://github.com/Rdatatable/data.table/commit/e06624879d8ab33036587b35fef947ff460db6bd
     Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit that fixes the regression
     Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"), # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
 
