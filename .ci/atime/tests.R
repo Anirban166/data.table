@@ -1,4 +1,27 @@
+# Test case adapted from https://github.com/Rdatatable/data.table/issues/6105#issue-2268691745 which is where the issue was reported.
+# https://github.com/Rdatatable/data.table/pull/6107 fixed performance across 3 ways to specify a column as Date, and we test each individually.
+extra.args.6107 <- c(
+  "colClasses=list(Date='date')",
+  "colClasses='Date'",
+  "select=list(Date='date')")
+extra.test.list <- list()
+for (extra.arg in extra.args.6107){
+  this.test <- atime::atime_test(
+    setup = {
+      set.seed(1)
+      DT = data.table(date=.Date(sample(20000, N, replace=TRUE)))
+      tmp_csv = tempfile()
+      fwrite(DT, tmp_csv)
+    },
+    Slow = "e9087ce9860bac77c51467b19e92cf4b72ca78c7", # Parent of the merge commit (https://github.com/Rdatatable/data.table/commit/a77e8c22e44e904835d7b34b047df2eff069d1f2) of the PR (https://github.com/Rdatatable/data.table/pull/6107) that fixes the issue
+    Fast = "a77e8c22e44e904835d7b34b047df2eff069d1f2") # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/6107) that fixes the issue
+  this.test$expr = str2lang(sprintf("data.table::fread(tmp_csv, %s)", extra.arg))
+  extra.test.list[[sprintf("fread(%s) improved in #6107", extra.arg)]] <- this.test
+}
+
 # A list of performance tests.
+#
+# See documentation in https://github.com/Rdatatable/data.table/wiki/Performance-testing for best practices.
 #
 # Each entry in this list corresponds to a performance test and contains a sublist with three mandatory arguments:
 # - N: A numeric sequence of data sizes to vary.
@@ -17,6 +40,8 @@
 # @note Please check https://github.com/tdhock/atime/blob/main/vignettes/data.table.Rmd for more information.
 # nolint start: undesirable_operator_linter. ':::' needed+appropriate here.
 test.list <- atime::atime_test_list(
+  # Common N and pkg.edit.fun are defined here, and inherited in all test cases below which do not re-define them.
+  N = as.integer(10^seq(1, 7, by=0.25)),
   # A function to customize R package metadata and source files to facilitate version-specific installation and testing.
   #
   # This is specifically tailored for handling data.table which requires specific changes in non-standard files (such as the object file name in Makevars and version checking code in onLoad.R)
@@ -87,5 +112,6 @@ test.list <- atime::atime_test_list(
     },
     Slow = "c4a2085e35689a108d67dacb2f8261e4964d7e12", # Parent of the first commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/commit/7cc4da4c1c8e568f655ab5167922dcdb75953801)
     Fast = "1872f473b20fdcddc5c1b35d79fe9229cd9a1d15"), # Last commit in the PR that fixes the issue (https://github.com/Rdatatable/data.table/pull/5427/commits)
-  NULL)
+
+  tests=extra.test.list)
 # nolint end: undesirable_operator_linter.
