@@ -101,7 +101,6 @@ test.list <- atime::atime_test_list(
   # Fixed in: https://github.com/Rdatatable/data.table/pull/4386
   "forder improved in #4386" = atime::atime_test(
     N = 10^seq(3, 8), # 1e9 exceeds the runner's memory (process gets killed)
-    seconds.limit = 0.1,
     setup = {
       options(datatable.verbose = TRUE, datatable.forder.auto.index = TRUE, datatable.forder.reuse.sorting = TRUE)
       dt <- data.table(indexCol = sample(N), valueCol = sample(N))
