@@ -1,31 +1,41 @@
 # Test case adapted from https://github.com/Rdatatable/data.table/issues/6105#issue-2268691745
+# https://github.com/Rdatatable/data.table/pull/6107 fixed performance across 3 ways to specify a column as Date, and we test each individually.
 extra.args.6107 <- c(
   "colClasses=list(Date='date')",
   "colClasses='Date'",
   "select=list(Date='date')"
 )
+
 extra.test.list <- list()
 
 for (extra.arg in extra.args.6107){
   this.test <- atime::atime_test(
     setup = {
       set.seed(1)
-      DT = data.table(date=.Date(sample(20000, N, replace=TRUE)))
+      DT = data.table(date = as.Date(sample(20000, N, replace = TRUE)))
       tmp_csv = tempfile()
       fwrite(DT, tmp_csv)
     },
-    Slow = "e9087ce9860bac77c51467b19e92cf4b72ca78c7", 
-    Fast = "a77e8c22e44e904835d7b34b047df2eff069d1f2"
+    Slow = "e9087ce9860bac77c51467b19e92cf4b72ca78c7", # Parent commit SHA
+    Fast = "a77e8c22e44e904835d7b34b047df2eff069d1f2"   # Merge commit SHA
   )
+  
+  # Define the expression as a language object using str2lang (acceptable here since it's a direct expression)
   this.test$expr <- str2lang(sprintf("data.table::fread(tmp_csv, %s)", extra.arg))
-  extra.test.list[[sprintf("fread(%s) improved in #6107", extra.arg)]] <- this.test
+  
+  # Assign a unique name to each test case
+  test_name <- sprintf("fread(%s) improved in #6107", extra.arg)
+  extra.test.list[[test_name]] <- this.test
 }
 
-# Test case adapted from https://github.com/Rdatatable/data.table/pull/4386#issue-602528139
-retGrp_values <- c("T","F")
+# Define retGrp_values as logicals
+retGrp_values <- c(TRUE, FALSE)
+
+# Loop through logical retGrp_setup and retGrp_expr
 for(retGrp_setup in retGrp_values){
   for(retGrp_expr in retGrp_values){
     test.name <- sprintf("forderv(retGrp=%s-%s) improved in #4386", retGrp_setup, retGrp_expr)
+    
     extra.test.list[[test.name]] <- list(
       setup = quote({
         options(datatable.forder.auto.index = TRUE)
@@ -33,29 +43,52 @@ for(retGrp_setup in retGrp_values){
         dt <- data.table(index = sample(N), values = sample(N))
         index.list <- list()
         for(retGrp in retGrp_values){
-          data.table:::forderv(dt, "index", retGrp = eval(str2lang(retGrp)))
-          index.list[[retGrp]] <- attr(dt, "index")
+          # Pass logical retGrp directly
+          data.table:::forderv(dt, "index", retGrp = retGrp)
+          # Use as.character(retGrp) to store in the list
+          index.list[[as.character(retGrp)]] <- attr(dt, "index")
         }
       }),
       expr = substitute({
-        setattr(dt, "index", index.list[[retGrp_setup]]) 
-        data.table:::forderv(dt, "index", retGrp = retGrp_expr) # Reusing the index and computing group info.
+        # Retrieve the index using as.character to match the setup
+        setattr(dt, "index", index.list[[as.character(retGrp_setup)]])
+        # Pass logical retGrp_expr directly
+        data.table:::forderv(dt, "index", retGrp = retGrp_expr)
       }, list(
         retGrp_setup = retGrp_setup,
         retGrp_expr = retGrp_expr
       )),
-      Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", 
-      Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"
+      Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent commit SHA
+      Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"   # Merge commit SHA
     )
   }
 }
 
 # A list of performance tests.
+#
+# See documentation in https://github.com/Rdatatable/data.table/wiki/Performance-testing for best practices.
+#
+# Each entry in this list corresponds to a performance test and contains a sublist with three mandatory arguments:
+# - N: A numeric sequence of data sizes to vary.
+# - setup: An expression evaluated for every data size before measuring time/memory.
+# - expr: An expression that will be evaluated for benchmarking performance across different git commit versions.
+#         This must call a function from data.table using a syntax with double or triple colon prefix.
+#         The package name before the colons will be replaced by a new package name that uses the commit SHA hash.
+#         (For instance, data.table:::[.data.table will become data.table.some_40_digit_SHA1_hash:::[.data.table)
+#
+# Optional parameters that may be useful to configure tests:
+# - times: Number of times each expression is evaluated (default is 10).
+# - seconds.limit: The maximum median timing (in seconds) of an expression. No timings for larger N are computed past that threshold. Default of 0.01 seconds should be sufficient for most tests.
+# - Historical references (short version name = commit SHA1).
+#   For historical regressions, use version names 'Before', 'Regression', and 'Fixed'
+#   When there was no regression, use 'Slow' and 'Fast' 
+# @note Please check https://github.com/tdhock/atime/blob/main/vignettes/data.table.Rmd for more information.
+# nolint start: undesirable_operator_linter. ':::' needed+appropriate here.
 test.list <- atime::atime_test_list(
-  # Common N and pkg.edit.fun are defined here
+  # Common N and pkg.edit.fun are defined here, and inherited in all test cases below which do not re-define them.
   N = as.integer(10^seq(1, 7, by=0.25)),
+  # pkg.edit.fun remains unchanged
   pkg.edit.fun = function(old.Package, new.Package, sha, new.pkg.path) {
-    # Function body remains unchanged
     pkg_find_replace <- function(glob, FIND, REPLACE) {
       atime::glob_find_replace(file.path(new.pkg.path, glob), FIND, REPLACE)
     }
@@ -65,30 +98,36 @@ test.list <- atime::atime_test_list(
     pkg_find_replace(
       "DESCRIPTION",
       paste0("Package:\\s+", old.Package),
-      paste("Package:", new.Package))
+      paste("Package:", new.Package)
+    )
     pkg_find_replace(
       file.path("src", "Makevars.*in"),
       Package_regex,
-      new.Package_)
+      new.Package_
+    )
     pkg_find_replace(
       file.path("R", "onLoad.R"),
       Package_regex,
-      new.Package_)
+      new.Package_
+    )
     pkg_find_replace(
       file.path("R", "onLoad.R"),
       sprintf('packageVersion\\("%s"\\)', old.Package),
-      sprintf('packageVersion\\("%s"\\)', new.Package))
+      sprintf('packageVersion\\("%s"\\)', new.Package)
+    )
     pkg_find_replace(
       file.path("src", "init.c"),
       paste0("R_init_", Package_regex),
-      paste0("R_init_", gsub("[.]", "_", new.Package_)))
+      paste0("R_init_", gsub("[.]", "_", new.Package_))
+    )
     pkg_find_replace(
       "NAMESPACE",
       sprintf('useDynLib\\("?%s"?', Package_regex),
-      paste0('useDynLib(', new.Package_))
+      paste0('useDynLib(', new.Package_)
+    )
   },
 
-  # Existing tests with consistent expr definitions
+  # Existing tests
   "shallow regression fixed in #4440" = atime::atime_test(
     setup = {
       set.seed(1L)
@@ -102,12 +141,13 @@ test.list <- atime::atime_test_list(
 
   "memrecycle regression fixed in #5463" = atime::atime_test(
     setup = {
-      bigN <- N*100
+      bigN <- N * 100
       set.seed(2L)
       dt <- data.table(
         g = sample(seq_len(N), bigN, TRUE),
         x = runif(bigN),
-        key = "g")
+        key = "g"
+      )
       dt_mod <- copy(dt)
     },
     expr = quote(data.table:::`[.data.table`(dt_mod, , N := .N, by = g)),
@@ -152,7 +192,7 @@ test.list <- atime::atime_test_list(
     expr = quote(data.table:::`[.data.table`(L, , .SD)),
     Fast = "353dc7a6b66563b61e44b2fa0d7b73a0f97ca461",
     Slow = "3ca83738d70d5597d9e168077f3768e32569c790"
-    # Removed 'Slower' label if not supported
+    # Removed 'Slower' label as it's not standard
   ),
 
   "DT[by,verbose=TRUE] improved in #6296" = atime::atime_test(
@@ -189,6 +229,7 @@ test.list <- atime::atime_test_list(
     Fast = "ed72e398df76a0fcfd134a4ad92356690e4210ea"
   ),
 
-  tests = extra.test.list # Appending the extra tests (fread and forderv atm)
+  # Append the extra tests (fread and forder)
+  tests = extra.test.list
 )
 # nolint end: undesirable_operator_linter.
