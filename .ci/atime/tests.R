@@ -19,6 +19,7 @@ for (extra.arg in extra.args.6107){
   extra.test.list[[sprintf("fread(%s) improved in #6107", extra.arg)]] <- this.test
 }
 
+if(!exists("extra.test.list")) extra.test.list <- list()
 # Test case adapted from https://github.com/Rdatatable/data.table/pull/4386#issue-602528139 which is where the performance was improved.
 retGrp_values <- c("T","F")
 for(retGrp_setup in retGrp_values){
