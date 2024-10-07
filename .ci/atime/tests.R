@@ -21,30 +21,31 @@ for (extra.arg in extra.args.6107){
 
 if(!exists("extra.test.list")) extra.test.list <- list()
 # Test case adapted from https://github.com/Rdatatable/data.table/pull/4386#issue-602528139 which is where the performance was improved.
-retGrp_values <- c("T","F")
+retGrp_values <- c(TRUE, FALSE)
 for(retGrp_setup in retGrp_values){
   for(retGrp_expr in retGrp_values){
     test.name <- sprintf("forderv(retGrp=%s-%s) improved in #4386", retGrp_setup, retGrp_expr)
     extra.test.list[[test.name]] <- list(
-    setup = quote({
-      options(datatable.forder.auto.index = TRUE)
-      set.seed(1)
-      dt <- data.table(index = sample(N), values = sample(N))
-      index.list <- list()
-      for(retGrp in retGrp_values){
-        data.table:::forderv(dt, "index", retGrp = eval(str2lang(retGrp)))
-        index.list[[retGrp]] <- attr(dt, "index")
-      }
-    }),
-    expr = substitute({
-      setattr(dt, "index", index.list[[retGrp_setup]]) 
-      data.table:::forderv(dt, "index", retGrp = retGrp_expr) # Reusing the index and computing group info.
-    }, list(
-      retGrp_setup=retGrp_setup,
-      retGrp_expr=str2lang(retGrp_expr)
-    )),
-    Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of the merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
-    Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506") # Merge commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) that fixes the regression
+      setup = quote({
+        options(datatable.forder.auto.index = TRUE)
+        set.seed(1)
+        dt <- data.table(index = sample(N), values = sample(N))
+        index.list <- list()
+        for(retGrp in retGrp_values){
+          data.table:::forderv(dt, "index", retGrp = retGrp)  # Direct logical values
+          index.list[[as.character(retGrp)]] <- attr(dt, "index")
+        }
+      }),
+      expr = substitute({
+        setattr(dt, "index", index.list[[as.character(retGrp_setup)]]) 
+        data.table:::forderv(dt, "index", retGrp = retGrp_expr)
+      }, list(
+        retGrp_setup = retGrp_setup,
+        retGrp_expr = retGrp_expr
+      )),
+      Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", 
+      Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506"
+    )
   }
 }
 
