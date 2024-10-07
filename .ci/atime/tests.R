@@ -19,6 +19,34 @@ for (extra.arg in extra.args.6107){
   extra.test.list[[sprintf("fread(%s) improved in #6107", extra.arg)]] <- this.test
 }
 
+# Test case adapted from https://github.com/Rdatatable/data.table/pull/4386#issue-602528139 which is where the performance was improved.
+retGrp_values <- c("T","F")
+for(retGrp_setup in retGrp_values){
+  for(retGrp_expr in retGrp_values){
+    test.name <- sprintf("forderv(retGrp=%s-%s) improved in #4386", retGrp_setup, retGrp_expr)
+    extra.test.list[[test.name]] <- list(
+    setup = quote({
+      options(datatable.forder.auto.index = TRUE)
+      set.seed(1)
+      dt <- data.table(index = sample(N), values = sample(N))
+      index.list <- list()
+      for(retGrp in retGrp_values){
+        data.table:::forderv(dt, "index", retGrp = eval(str2lang(retGrp)))
+        index.list[[retGrp]] <- attr(dt, "index")
+      }
+    }),
+    expr = substitute({
+      setattr(dt, "index", index.list[[retGrp_setup]]) 
+      data.table:::forderv(dt, "index", retGrp = retGrp_expr) # Reusing the index and computing group info.
+    }, list(
+      retGrp_setup=retGrp_setup,
+      retGrp_expr=str2lang(retGrp_expr)
+    )),
+    Slow = "b1b1832b0d2d4032b46477d9fe6efb15006664f4", # Parent of the first commit (https://github.com/Rdatatable/data.table/commit/b0efcf59442a7d086c6df17fa6a45c81b082322e) in the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) where the performance was improved.
+    Fast = "ffe431fbc1fe2d52ed9499f78e7e16eae4d71a93") # Last commit of the PR (https://github.com/Rdatatable/data.table/pull/4386/commits) where the performance was improved.
+  }
+}
+
 # A list of performance tests.
 #
 # See documentation in https://github.com/Rdatatable/data.table/wiki/Performance-testing for best practices.
