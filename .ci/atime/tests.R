@@ -19,31 +19,6 @@ for (extra.arg in extra.args.6107){
   extra.test.list[[sprintf("fread(%s) improved in #6107", extra.arg)]] <- this.test
 }
 
-# Test case adapted from https://github.com/Rdatatable/data.table/pull/4386#issue-602528139 which is where the performance was improved.
-for(retGrp_chr in c("T","F"))extra.test.list[[sprintf(
-  "forderv(retGrp=%s) improved in #4386", retGrp_chr
-)]] <- list(
-  setup = quote({
-    dt <- data.table(group = rep(1:2, l=N))
-  }),
-  expr = substitute({
-    old.opt <- options(datatable.forder.auto.index = TRUE) # required for test, un-documented, comments in forder.c say it is for debugging only.
-    data.table:::forderv(dt, "group", retGrp = RETGRP)
-    options(old.opt) # so the option does not affect other tests.
-  }, list(RETGRP=eval(str2lang(retGrp_chr)))),
-  ## From ?bench::mark, "Each expression will always run at least twice,
-  ## once to measure the memory allocation and store results
-  ## and one or more times to measure timing."
-  ## So for atime(times=10) that means 11 times total.
-  ## First time for memory allocation measurement,
-  ## (also sets the index of dt in this example),
-  ## then 10 more times for time measurement.
-  ## Timings should be constant if the cached index is used (Fast),
-  ## and (log-)linear if the index is re-computed (Slow).
-  Slow = "c152ced0e5799acee1589910c69c1a2c6586b95d", # Parent of merge commit
-  Fast = "1a84514f6d20ff1f9cc614ea9b92ccdee5541506" # Merge commit SHA
-)
-
 # A list of performance tests.
 #
 # See documentation in https://github.com/Rdatatable/data.table/wiki/Performance-testing for best practices.
