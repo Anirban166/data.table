@@ -19226,7 +19226,8 @@ test(2286,
        x<2, structure(list(1), class = "foo"),
        x<3, structure(list(2), class = "foo"),
        # Force gc() and some allocations which have a good chance at landing in the region that was earlier left unprotected
-       { gc(full = TRUE); replicate(10, FALSE); x<4 },
+       # TODO(R>=3.5.0): no need to branch here for gc(full=TRUE)
+       { if ("full" %in% names(formals(gc))) gc(full = TRUE) else gc(); replicate(10, FALSE); x<4 },
        `attr<-`(list(3), "class", "foo")),
      structure(list(1, 2, 3), class = "foo"))
 
@@ -20582,3 +20583,11 @@ test(2294.72,
                                 character(0)),
                     label = list(character = "C3", VCharA = "Total", integer = 2L))),
      warning = "For the following variables, the 'label' value was already in the data: [VCharB (label: C3), VIntA (label: 2)]")
+
+# setDT no longer leaks class modification to origin copy, #4784
+d1 = data.frame(a=1, row.names='b')
+d2 = d1
+setDT(d2)
+test(2295.1, !is.data.table(d1))
+test(2295.2, rownames(d1), 'b')
+test(2295.3, is.data.table(d2))
